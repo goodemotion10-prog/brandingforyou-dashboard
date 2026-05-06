@@ -20,7 +20,12 @@ export async function GET(req: NextRequest) {
     }
 
     const results = [];
+    const currentDay = new Date().getDay(); // 0 is Sunday, 1 is Monday
+
     for (const task of tasks) {
+      if (task.frequency === 'weekly' && currentDay !== 1) {
+        continue; // 매주(weekly)로 설정된 태스크는 월요일(1)에만 실행
+      }
       const research = await performResearch(task.topic);
       if (research.success && research.summary) {
         await sendResearchEmail(task.recipients, task.topic, research.summary);

@@ -46,22 +46,35 @@ export default function ResearchManagement() {
   };
 
   const addTask = async () => {
-    if (!newTask.topic || !newTask.recipients) return;
+    if (!newTask.topic || !newTask.recipients) {
+      alert("주제와 이메일을 모두 입력해주세요.");
+      return;
+    }
     
-    const { data } = await supabase
-      .from("research_tasks")
-      .insert([{
-        topic: newTask.topic,
-        frequency: newTask.frequency,
-        recipients: newTask.recipients,
-        status: "active"
-      }])
-      .select();
+    try {
+      const { data, error } = await supabase
+        .from("research_tasks")
+        .insert([{
+          topic: newTask.topic,
+          frequency: newTask.frequency,
+          recipients: newTask.recipients,
+          status: "active"
+        }])
+        .select();
 
-    if (data) {
-      setTasks([data[0], ...tasks]);
-      setNewTask({ topic: "", frequency: "daily", recipients: "" });
-      setIsModalOpen(false);
+      if (error) {
+        console.error("Supabase Error:", error);
+        alert(`저장 실패: ${error.message}\n(데이터베이스 테이블이 없거나 권한(RLS) 문제일 수 있습니다.)`);
+        return;
+      }
+
+      if (data) {
+        setTasks([data[0], ...tasks]);
+        setNewTask({ topic: "", frequency: "daily", recipients: "" });
+        setIsModalOpen(false);
+      }
+    } catch (err: any) {
+      alert(`시스템 에러: ${err.message}`);
     }
   };
 
