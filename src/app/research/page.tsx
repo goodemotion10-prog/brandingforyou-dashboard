@@ -11,8 +11,7 @@ import {
   AlertCircle,
   Loader2,
   X,
-  Target,
-  ArrowRight
+  Target
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -78,87 +77,82 @@ export default function ResearchManagement() {
   };
 
   return (
-    <div className="animate-fade-in max-w-7xl mx-auto">
-      <header className="flex justify-between items-end mb-14">
+    <div className="max-w-5xl animate-in fade-in duration-500">
+      <header className="flex justify-between items-end mb-8">
         <div>
-          <h1 className="text-5xl font-extrabold mb-3 tracking-tighter text-white">Research Hub</h1>
-          <p className="text-lg text-slate-400 font-medium">자동화 리서치 작업을 관리하고 모니터링합니다.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">리서치 관리</h1>
+          <p className="text-sm text-gray-500">자동으로 추적할 업체나 키워드를 관리하세요.</p>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="btn-premium btn-primary shadow-2xl"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors shadow-sm"
         >
-          <Plus className="w-5 h-5" />
-          신규 태스크 등록
+          <Plus className="w-4 h-4" />
+          새 리서치 추가
         </button>
       </header>
 
       {loading ? (
-        <div className="flex flex-col items-center justify-center p-32">
-          <div className="relative">
-            <Loader2 className="w-16 h-16 text-indigo-500 animate-spin" />
-            <div className="absolute inset-0 blur-xl bg-indigo-500/20 animate-pulse" />
-          </div>
-          <p className="mt-8 text-slate-500 font-bold uppercase tracking-widest">Loading Pipeline...</p>
+        <div className="flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 text-brand-500 animate-spin mb-4" />
+          <p className="text-sm text-gray-500">목록을 불러오는 중...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="space-y-4">
           {tasks.length === 0 ? (
-            <div className="md:col-span-2 glass-card p-24 flex flex-col items-center justify-center text-center">
-              <div className="w-24 h-24 bg-slate-800/50 rounded-3xl flex items-center justify-center mb-8 border border-white/5">
-                <Target className="w-10 h-10 text-slate-600" />
+            <div className="bg-white rounded-xl p-16 flex flex-col items-center justify-center text-center shadow-sm border border-gray-100">
+              <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-100">
+                <Target className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-slate-300">리서치 목록이 비어있습니다.</h3>
-              <p className="text-slate-500 max-w-md font-medium leading-relaxed">
-                우측 상단의 버튼을 눌러 첫 번째 자동화 리서치 태스크를 등록해 보세요.
+              <h3 className="text-lg font-bold text-gray-900 mb-2">등록된 리서치가 없습니다</h3>
+              <p className="text-sm text-gray-500 max-w-sm">
+                우측 상단의 버튼을 눌러 새 리서치를 추가하여 업계 동향을 자동으로 받아보세요.
               </p>
             </div>
           ) : (
             tasks.map((task) => (
-              <div key={task.id} className="glass-card p-8 group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500 opacity-[0.02] rounded-full -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700" />
-                
-                <div className="flex justify-between items-start mb-8">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center text-indigo-400 border border-indigo-500/20 group-hover:scale-110 transition-transform duration-300">
-                    <Search className="w-8 h-8" />
+              <div key={task.id} className="bg-white rounded-xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 shadow-sm border border-gray-100 hover:border-brand-200 transition-colors group">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-brand-50 flex items-center justify-center text-brand-600 border border-brand-100">
+                    <Search className="w-6 h-6" />
                   </div>
-                  <div className="flex gap-2">
-                    <button 
-                      onClick={() => deleteTask(task.id)}
-                      className="p-3 rounded-xl bg-red-500/5 text-red-500/40 hover:text-red-500 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-indigo-400 transition-colors">{task.topic}</h3>
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <Mail className="w-4 h-4" />
-                    <span className="text-sm font-medium">{task.recipients}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                  <div className="flex gap-4">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-500/5 border border-indigo-500/10">
-                      <Clock className="w-4 h-4 text-indigo-400" />
-                      <span className="text-xs font-bold text-indigo-400 uppercase tracking-tighter">
-                        {task.frequency === "daily" ? "Every Day" : "Every Week"}
+                  <div>
+                    <h3 className="text-base font-bold text-gray-900 mb-1.5">{task.topic}</h3>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-gray-400" />
+                        {task.frequency === "daily" ? "매일" : "매주"} 발송
                       </span>
+                      <span className="flex items-center gap-1.5">
+                        <Mail className="w-4 h-4 text-gray-400" />
+                        {task.recipients}
+                      </span>
+                      {task.last_run && (
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4 text-gray-400" />
+                          최근 실행: {new Date(task.last_run).toLocaleDateString()}
+                        </span>
+                      )}
                     </div>
-                    {task.last_run && (
-                      <div className="flex items-center gap-2 text-slate-500">
-                        <Calendar className="w-4 h-4" />
-                        <span className="text-[10px] font-bold uppercase tracking-tighter">Last Run: {new Date(task.last_run).toLocaleDateString()}</span>
-                      </div>
-                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                    <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active</span>
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[11px] font-medium text-gray-500 uppercase tracking-wider mb-0.5">Status</span>
+                    <span className="flex items-center gap-1.5 text-sm font-medium text-emerald-600">
+                      <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                      활성
+                    </span>
                   </div>
+                  <div className="h-8 w-px bg-gray-200 hidden md:block"></div>
+                  <button 
+                    onClick={() => deleteTask(task.id)}
+                    className="p-2 rounded-md text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                    title="삭제"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
             ))
@@ -166,91 +160,86 @@ export default function ResearchManagement() {
         </div>
       )}
 
-      {/* Modern Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="glass-card w-full max-w-xl p-10 relative overflow-hidden border-white/10 shadow-[0_0_100px_rgba(99,102,241,0.1)]">
-            <div className="flex justify-between items-center mb-10">
-              <div>
-                <h2 className="text-3xl font-extrabold text-white tracking-tight">New Research Task</h2>
-                <p className="text-slate-400 text-sm mt-1">리서치 자동화 설정을 완료하세요.</p>
-              </div>
-              <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-white/5 rounded-full text-slate-500 hover:text-white transition-all">
-                <X className="w-6 h-6" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+              <h2 className="text-lg font-bold text-gray-900">새 리서치 등록</h2>
+              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="space-y-8">
+            <div className="p-6 space-y-6">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-3">Topic / Company</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">리서치 주제 또는 업체명</label>
                 <input 
                   type="text" 
-                  className="premium-input" 
-                  placeholder="예: AI 헬스케어 스타트업 트렌드"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
+                  placeholder="예: 현대자동차 자율주행 트렌드"
                   value={newTask.topic}
                   onChange={(e) => setNewTask({...newTask, topic: e.target.value})}
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-3">Frequency</label>
-                <div className="grid grid-cols-2 gap-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">발송 주기</label>
+                <div className="grid grid-cols-2 gap-3">
                   <button 
                     onClick={() => setNewTask({...newTask, frequency: "daily"})}
-                    className={`px-6 py-4 rounded-2xl border font-bold transition-all ${
+                    className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
                       newTask.frequency === "daily" 
-                        ? "bg-indigo-600/20 border-indigo-500 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.2)]" 
-                        : "bg-white/[0.02] border-white/5 text-slate-500 hover:border-white/10"
+                        ? "bg-brand-50 border-brand-500 text-brand-700" 
+                        : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    매일 발송 (Daily)
+                    매일
                   </button>
                   <button 
                     onClick={() => setNewTask({...newTask, frequency: "weekly"})}
-                    className={`px-6 py-4 rounded-2xl border font-bold transition-all ${
+                    className={`px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
                       newTask.frequency === "weekly" 
-                        ? "bg-indigo-600/20 border-indigo-500 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.2)]" 
-                        : "bg-white/[0.02] border-white/5 text-slate-500 hover:border-white/10"
+                        ? "bg-brand-50 border-brand-500 text-brand-700" 
+                        : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    매주 발송 (Weekly)
+                    매주
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-3">Recipients (Email)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">결과 수신 이메일</label>
                 <input 
                   type="email" 
-                  className="premium-input" 
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
                   placeholder="name@company.com"
                   value={newTask.recipients}
                   onChange={(e) => setNewTask({...newTask, recipients: e.target.value})}
                 />
               </div>
 
-              <div className="flex items-start gap-4 p-5 rounded-2xl bg-indigo-500/5 border border-indigo-500/10">
-                <AlertCircle className="w-6 h-6 text-indigo-400 flex-shrink-0" />
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  설정한 주기에 맞춰 Tavily 엔진이 웹을 검색하고 ChatGPT-4o가 인사이트를 요약하여 이메일로 전송합니다.
+              <div className="flex items-start gap-3 p-3.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-100">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm leading-relaxed">
+                  설정한 주기에 맞춰 AI가 검색 결과를 요약하여 메일로 발송합니다.
                 </p>
               </div>
+            </div>
 
-              <div className="flex gap-4 pt-6">
-                <button 
-                  onClick={() => setIsModalOpen(false)}
-                  className="btn-premium btn-secondary flex-1"
-                >
-                  취소
-                </button>
-                <button 
-                  onClick={addTask}
-                  className="btn-premium btn-primary flex-1 group"
-                >
-                  태스크 생성하기
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex gap-3 justify-end">
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                취소
+              </button>
+              <button 
+                onClick={addTask}
+                className="px-4 py-2 text-sm font-medium text-white bg-brand-600 rounded-lg hover:bg-brand-700 transition-colors"
+              >
+                등록하기
+              </button>
             </div>
           </div>
         </div>
