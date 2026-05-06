@@ -14,8 +14,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "BrandingForYou | Dashboard",
-  description: "BrandingForYou 통합 리서치 및 관리 대시보드",
+  title: "B4Y | Unified Dashboard",
+  description: "BrandingForYou Premium Intelligence Hub",
 };
 
 export default function RootLayout({
@@ -25,11 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${inter.variable} ${outfit.variable}`} style={{ fontFamily: "var(--font-inter), sans-serif" }}>
-        <Sidebar />
-        <main className="main-content">
-          {children}
-        </main>
+      <body className={`${inter.variable} ${outfit.variable}`}>
+        <div className="layout-container">
+          <Sidebar />
+          <main className="main-content">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

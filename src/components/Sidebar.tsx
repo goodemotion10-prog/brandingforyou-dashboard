@@ -8,7 +8,8 @@ import {
   History, 
   Settings, 
   ChevronRight,
-  TrendingUp
+  Sparkles,
+  ArrowRightCircle
 } from "lucide-react";
 
 const menuItems = [
@@ -23,45 +24,53 @@ export default function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <div className="flex items-center gap-3 mb-10 px-2">
-        <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
-          <TrendingUp className="text-white w-6 h-6" />
+      <div className="flex items-center gap-4 mb-12 px-2">
+        <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-500/20">
+          <Sparkles className="text-white w-7 h-7" />
         </div>
         <div>
-          <h1 className="text-xl font-bold tracking-tight">BrandingForYou</h1>
-          <p className="text-xs text-slate-500 font-medium">Research Hub</p>
+          <h1 className="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+            B4Y Hub
+          </h1>
+          <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-bold">BrandingForYou</p>
         </div>
       </div>
 
-      <nav className="flex-1 space-y-2">
+      <nav className="flex-1 space-y-3">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group ${
+              className={`flex items-center justify-between px-5 py-4 rounded-2xl transition-all duration-300 group ${
                 isActive 
-                  ? "bg-indigo-600/10 text-indigo-400 border border-indigo-500/20" 
-                  : "text-slate-400 hover:bg-white/5 hover:text-slate-200"
+                  ? "bg-white/5 text-indigo-400 border border-white/10 shadow-lg" 
+                  : "text-slate-400 hover:bg-white/5 hover:text-white"
               }`}
             >
-              <div className="flex items-center gap-3">
-                <item.icon className={`w-5 h-5 ${isActive ? "text-indigo-400" : "group-hover:text-slate-200"}`} />
-                <span className="font-medium">{item.label}</span>
+              <div className="flex items-center gap-4">
+                <item.icon className={`w-5 h-5 transition-transform duration-300 ${isActive ? "text-indigo-400 scale-110" : "group-hover:scale-110"}`} />
+                <span className={`font-semibold tracking-wide ${isActive ? "text-white" : ""}`}>{item.label}</span>
               </div>
-              {isActive && <ChevronRight className="w-4 h-4" />}
+              {isActive && <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]" />}
             </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto p-4 glass rounded-2xl bg-indigo-600/5 border-indigo-500/10">
-        <p className="text-xs text-slate-400 mb-1">현재 상태</p>
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-          <span className="text-sm font-semibold text-slate-200">시스템 정상</span>
+      <div className="mt-auto p-6 glass-card bg-indigo-600/5 border-white/5">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+          <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">System Operational</span>
         </div>
+        <p className="text-[11px] text-slate-500 leading-relaxed mb-4">
+          리서치 자동화 파이프라인이 정상적으로 가동 중입니다.
+        </p>
+        <button className="w-full flex items-center justify-between text-xs font-bold text-indigo-400 hover:text-indigo-300 transition-colors group">
+          로그아웃
+          <ArrowRightCircle className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </button>
       </div>
     </aside>
   );
