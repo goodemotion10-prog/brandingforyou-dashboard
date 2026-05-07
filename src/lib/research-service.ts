@@ -1,10 +1,8 @@
 import { Resend } from 'resend';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export async function performResearch(topic: string) {
   try {
@@ -24,31 +22,21 @@ export async function performResearch(topic: string) {
     const searchData = await searchResponse.json();
     const context = searchData.results?.map((r: any) => r.content).join('\n\n') || "검색 결과가 없습니다.";
 
-    // 2. OpenAI Summary
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: "당신은 브랜딩포유(BrandingForYou)의 전문 리서치 어시스턴트입니다. 검색 결과를 바탕으로 고퀄리티 리포트를 작성하세요."
-        },
-        {
-          role: "user",
-          content: `다음 검색 결과를 바탕으로 "${topic}"에 대한 리포트를 작성해주세요.
-          
-          형식:
-          1. 핵심 요약 (3줄 이내)
-          2. 주요 이슈 및 트렌드 (불렛 포인트)
-          3. 인사이트 및 제언
-          
-          어투: 전문적이면서도 친절한 비즈니스 어투 (~합니다)
-          검색 결과:
-          ${context}`
-        }
-      ],
-    });
+    // 2. Gemini Summary
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const prompt = `당신은 브랜딩포유(BrandingForYou)의 전문 리서치 어시스턴트입니다. 다음 검색 결과를 바탕으로 "${topic}"에 대한 고퀄리티 리포트를 작성해주세요.
+    
+    형식:
+    1. 핵심 요약 (3줄 이내)
+    2. 주요 이슈 및 트렌드 (불렛 포인트)
+    3. 인사이트 및 제언
+    
+    어투: 전문적이면서도 친절한 비즈니스 어투 (~합니다)
+    검색 결과:
+    ${context}`;
 
-    const summary = response.choices[0].message.content;
+    const result = await model.generateContent(prompt);
+    const summary = result.response.text();
 
     return {
       success: true,
