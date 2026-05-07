@@ -21,7 +21,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'No active tasks found' });
     }
 
-    const results = [];
     const currentDay = new Date().getDay(); // 0 is Sunday, 1 is Monday
 
     // 필터링: 주간 설정인데 오늘이 월요일(1)이 아니면 제외
