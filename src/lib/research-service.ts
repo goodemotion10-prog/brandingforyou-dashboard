@@ -23,7 +23,7 @@ export async function performResearch(topic: string) {
     const context = searchData.results?.map((r: any) => r.content).join('\n\n') || "검색 결과가 없습니다.";
 
     // 2. Gemini Summary
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     const prompt = `당신은 브랜딩포유(BrandingForYou)의 전문 리서치 어시스턴트입니다. 다음 검색 결과를 바탕으로 "${topic}"에 대한 고퀄리티 리포트를 작성해주세요.
     
     형식:
