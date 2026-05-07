@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { performResearch, sendResearchEmail } from '@/lib/research-service';
 
+export const maxDuration = 60; // Vercel Serverless Function 타임아웃 방지 (60초)
+
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get('authorization');
   if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
