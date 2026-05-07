@@ -75,6 +75,14 @@ export async function POST(req: NextRequest) {
   const research = await performResearch(topic);
   if (research.success && research.summary) {
     await sendResearchEmail(recipients, topic, research.summary);
+    
+    // DB에 수동 리서치 결과 저장 (대시보드 연동)
+    await supabase.from('research_results').insert({
+      title: `${topic} 수동 리서치 보고서`,
+      content: research.summary,
+      summary: research.summary.substring(0, 200) + '...'
+    });
+
     return NextResponse.json({ message: 'Manual research success', summary: research.summary });
   } else {
     return NextResponse.json({ error: research.error }, { status: 500 });

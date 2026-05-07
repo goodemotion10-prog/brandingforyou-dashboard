@@ -32,25 +32,30 @@ export async function performResearch(topic: string, frequency: string = 'daily'
     const prompt = `당신은 브랜딩포유(BrandingForYou)의 수석 리서치 애널리스트입니다. 
     오늘의 미션은 "${topic}"에 대해 지난 ${frequency === 'weekly' ? '1주일' : '24시간'} 동안 발생한 **'새로운' 이슈와 변화**를 포착하여 보고하는 것입니다.
     
-    지침:
-    - 어제와 오늘 사이에 새롭게 등장한 뉴스, 블로그, 트렌드 변화를 우선적으로 다루세요.
+    [중요 지침]
+    - 이메일 발송용이므로 **마크다운 기호(###, **, #, *, - 등)를 절대 사용하지 마세요.**
+    - 제목은 [숫자. 제목] 형식으로 작성하세요.
+    - 불렛 포인트 대신 '•' 기호를 사용하거나 번호를 매기세요.
     - 한국어로 작성하며, 전문적이면서도 가독성이 높은 비즈니스 어투(~합니다)를 사용하세요.
     
     형식:
-    # 🚀 핵심 요약
+    1. 핵심 요약
     (가장 중요한 변화를 1~2줄로 요약)
     
-    ## 📈 주요 이슈 및 뉴스
-    - 항목별로 상세히 기술
+    2. 주요 이슈 및 뉴스
+    • 항목별로 상세히 기술
     
-    ## 💡 비즈니스 인사이트 및 제언
-    - 전략적 제안 포함
+    3. 비즈니스 인사이트 및 제언
+    • 전략적 제안 포함
     
     검색 결과 데이터:
     ${context}`;
 
     const result = await model.generateContent(prompt);
-    const summary = result.response.text();
+    let summary = result.response.text();
+
+    // 혹시라도 남아있을 수 있는 마크다운 기호를 정규표현식으로 한 번 더 제거
+    summary = summary.replace(/[#*]/g, ''); // #와 * 제거
 
     return {
       success: true,
@@ -69,8 +74,8 @@ export async function sendResearchEmail(to: string, topic: string, content: stri
     const cleanTopic = topic.replace(/[^\w\sㄱ-ㅎ가-힣]/gi, '').trim();
     const subject = `[B4Y 리서치] ${cleanTopic} 최신 보고서`;
 
-    // 마크다운을 HTML로 변환
-    const htmlContent = marked.parse(content);
+    // 마크다운이 아닌 텍스트를 받으므로, 줄바꿈만 HTML <br>로 변환
+    const htmlContent = content.replace(/\n/g, '<br>');
 
     const { data, error } = await resend.emails.send({
       from: 'BrandingForYou <onboarding@resend.dev>',
@@ -90,16 +95,6 @@ export async function sendResearchEmail(to: string, topic: string, content: stri
           </p>
           
           <div style="line-height: 1.8; color: #334155; font-size: 16px;">
-            <style>
-              h1, h2, h3 { color: #1e293b; margin-top: 30px; margin-bottom: 15px; font-weight: 800; }
-              h1 { font-size: 22px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
-              h2 { font-size: 19px; color: #4338ca; }
-              p { margin-bottom: 16px; }
-              ul, ol { margin-bottom: 20px; padding-left: 20px; }
-              li { margin-bottom: 10px; }
-              strong { color: #0f172a; font-weight: 700; }
-              blockquote { border-left: 4px solid #e2e8f0; padding-left: 20px; color: #64748b; font-style: italic; margin: 20px 0; }
-            </style>
             ${htmlContent}
           </div>
           
