@@ -11,7 +11,8 @@ import {
   AlertCircle,
   Loader2,
   X,
-  Target
+  Target,
+  ArrowRight
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
@@ -28,7 +29,8 @@ export default function ResearchManagement() {
   const [tasks, setTasks] = useState<ResearchTask[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newTask, setNewTask] = useState({ topic: "", frequency: "daily", recipients: "" });
+  // recipients 필드는 이제 UI에서 제거하고 내부적으로 관리
+  const [newTask, setNewTask] = useState({ topic: "", frequency: "daily" });
 
   useEffect(() => {
     fetchTasks();
@@ -46,8 +48,8 @@ export default function ResearchManagement() {
   };
 
   const addTask = async () => {
-    if (!newTask.topic || !newTask.recipients) {
-      alert("주제와 이메일을 모두 입력해주세요.");
+    if (!newTask.topic) {
+      alert("리서치 주제를 입력해주세요.");
       return;
     }
     
@@ -57,20 +59,20 @@ export default function ResearchManagement() {
         .insert([{
           topic: newTask.topic,
           frequency: newTask.frequency,
-          recipients: newTask.recipients,
+          recipients: "goodemotion10@gmail.com", // 고정 이메일 사용
           status: "active"
         }])
         .select();
 
       if (error) {
         console.error("Supabase Error:", error);
-        alert(`저장 실패: ${error.message}\n(데이터베이스 테이블이 없거나 권한(RLS) 문제일 수 있습니다.)`);
+        alert(`저장 실패: ${error.message}`);
         return;
       }
 
       if (data) {
         setTasks([data[0], ...tasks]);
-        setNewTask({ topic: "", frequency: "daily", recipients: "" });
+        setNewTask({ topic: "", frequency: "daily" });
         setIsModalOpen(false);
       }
     } catch (err: any) {
@@ -119,7 +121,7 @@ export default function ResearchManagement() {
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-2">등록된 리서치가 없습니다</h3>
               <p className="text-sm text-gray-500 max-w-sm">
-                우측 상단의 버튼을 눌러 새 리서치를 추가하여 업계 동향을 자동으로 받아보세요.
+                신규 리서치를 추가하여 24시간 내 발생한 최신 트렌드를 받아보세요.
               </p>
             </div>
           ) : (
@@ -138,7 +140,7 @@ export default function ResearchManagement() {
                       </span>
                       <span className="flex items-center gap-1.5">
                         <Mail className="w-4 h-4 text-gray-400" />
-                        {task.recipients}
+                        관리자 G메일 발송
                       </span>
                       {task.last_run && (
                         <span className="flex items-center gap-1.5">
@@ -206,7 +208,7 @@ export default function ResearchManagement() {
                         : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    매일
+                    매일 (최근 24시간 분석)
                   </button>
                   <button 
                     onClick={() => setNewTask({...newTask, frequency: "weekly"})}
@@ -216,26 +218,15 @@ export default function ResearchManagement() {
                         : "bg-white border-gray-200 text-gray-600 hover:bg-gray-50"
                     }`}
                   >
-                    매주
+                    매주 (최근 7일 분석)
                   </button>
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">결과 수신 이메일</label>
-                <input 
-                  type="email" 
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-colors"
-                  placeholder="name@company.com"
-                  value={newTask.recipients}
-                  onChange={(e) => setNewTask({...newTask, recipients: e.target.value})}
-                />
               </div>
 
               <div className="flex items-start gap-3 p-3.5 rounded-lg bg-blue-50 text-blue-700 border border-blue-100">
                 <AlertCircle className="w-5 h-5 flex-shrink-0" />
                 <p className="text-sm leading-relaxed">
-                  설정한 주기에 맞춰 AI가 검색 결과를 요약하여 메일로 발송합니다.
+                  결과는 대표님의 G메일(<span className="font-bold underline">goodemotion10@gmail.com</span>)로 자동 발송됩니다.
                 </p>
               </div>
             </div>

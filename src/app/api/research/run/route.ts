@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
     const results = await Promise.all(
       tasksToRun.map(async (task) => {
         try {
-          const research = await performResearch(task.topic);
+          const research = await performResearch(task.topic, task.frequency);
           if (research.success && research.summary) {
             await sendResearchEmail(task.recipients, task.topic, research.summary);
             await supabase.from('research_results').insert({
