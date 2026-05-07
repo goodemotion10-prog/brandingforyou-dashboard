@@ -7,7 +7,8 @@ import {
   Search, 
   History, 
   Settings,
-  Sparkles
+  Sparkles,
+  Lightbulb
 } from "lucide-react";
 
 const menuItems = [
@@ -15,6 +16,7 @@ const menuItems = [
   { icon: Search, label: "리서치 관리", href: "/research" },
   { icon: History, label: "리서치 결과", href: "/history" },
   { icon: Settings, label: "설정", href: "/settings" },
+  { icon: Lightbulb, label: "사용법 가이드", href: "/tips" },
 ];
 
 export default function Sidebar() {
