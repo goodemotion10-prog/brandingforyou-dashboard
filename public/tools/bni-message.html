@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNI 추천 메시지 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">🤝</div>
+      <h1>BNI 추천 메시지 생성기</h1>
+      <p class="tool-subtitle">기버스 게인(Givers Gain) 철학을 바탕으로, 단순 소개를 넘어 신뢰와 계약을 이끌어내는 강력한 추천사(리퍼럴)를 작성합니다.</p>
+    </header>
+
+    <!-- STEP 1: 멤버 전문성 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 추천 멤버 및 전문성 (Expertise)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group" style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+            <label class="field-label">추천 멤버 (이름 / 업체명)</label>
+            <input type="text" id="member_name" placeholder="예: 홍길동 대표 / 길동세무회계">
+          </div>
+          <div style="flex: 1;">
+            <label class="field-label">핵심 전문 분야</label>
+            <input type="text" id="member_expert" placeholder="예: 법인 절세 전략, 상속·증여세 전문">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">이 멤버의 압도적 강점 (숫자, 레퍼런스, 속도 등)</label>
+          <textarea id="member_strength" placeholder="예: 업계 평균 대비 30% 절세 효과 증명, 10년 이상의 국세청 출신 노하우 등"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 타깃 및 상황 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 타깃 리퍼럴 및 상황 진단 (Target)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">누구에게 이 멤버를 소개하고 싶나요? (Target)</label>
+          <input type="text" id="referral_target" placeholder="예: 최근 매출이 급증하여 법인 전환을 고민 중인 소상공인 대표님">
+        </div>
+        <div class="field-group">
+          <label class="field-label">그 타깃이 현재 겪고 있는 가장 큰 문제점 (Pain Point)</label>
+          <textarea id="target_painpoint" placeholder="예: 세금 폭탄을 맞을까 봐 두려워하고 있으며, 믿을 만한 세무사를 찾지 못해 불안해함."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 혜택 및 추천의 변 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 소개 혜택 및 나의 보증 (Benefit & Trust)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">이 멤버를 만나면 타깃이 얻게 될 확실한 혜택</label>
+          <textarea id="referral_benefit" placeholder="예: 첫 상담만으로도 불필요하게 새어나가는 세금을 막고, 법인 전환의 완벽한 로드맵을 얻게 됩니다."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">내가 이 멤버를 강력히 추천하는 이유 (개인적 경험/보증)</label>
+          <textarea id="personal_trust" placeholder="예: 제 회사의 세무 기장도 맡기고 있는데, 언제나 제 일처럼 꼼꼼하게 챙겨주셔서 100% 신뢰합니다."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: 메시지 포맷 및 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 메시지 포맷 및 튜닝 (Format)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">메시지 포맷</label>
+          <div class="chip-group" data-id="message_type">
+            <span class="chip-btn active" data-value="카톡 전달용 (가볍고 친근하게)">💬 카톡 전달용 (제3자 소개용)</span>
+            <span class="chip-btn" data-value="공식 추천사 (전문성과 신뢰 강조)">📜 공식 추천사 (홈페이지/SNS용)</span>
+            <span class="chip-btn" data-value="121 협업 제안 (시너지 강조)">🤝 121 협업 제안 (멤버 간 미팅용)</span>
+            <span class="chip-btn" data-value="위클리 프레젠테이션 (세일즈 피치)">🎤 위클리 PT (발표 원고용)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">메시지 세부 튜닝 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="message_tuning" data-multi="true">
+            <span class="chip-btn active" data-value="BNI의 기버스 게인(Givers Gain) 철학을 자연스럽게 녹여내기">기버스 게인(Givers Gain) 철학 강조</span>
+            <span class="chip-btn" data-value="즉각적인 미팅이나 통화 연결을 유도하는 Call-to-Action 삽입">즉각적인 소개/미팅 연결 유도 (CTA)</span>
+            <span class="chip-btn" data-value="내 이름(추천인)을 걸고 보증한다는 신뢰의 무게감 부여">내 이름을 건 강력한 보증(Trust) 부여</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 BNI 추천 메시지 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const member = document.getElementById('member_name').value;
+      const expert = document.getElementById('member_expert').value;
+      const strength = document.getElementById('member_strength').value;
+      
+      const target = document.getElementById('referral_target').value;
+      const painpoint = document.getElementById('target_painpoint').value;
+      
+      const benefit = document.getElementById('referral_benefit').value;
+      const trust = document.getElementById('personal_trust').value;
+      
+      const type = document.getElementById('message_type').value || '카톡 전달용';
+      const tuning = document.getElementById('message_tuning').value || '신뢰감 있는 톤 유지';
+
+      if (!member || !expert || !target) {
+        alert('추천 멤버, 전문 분야, 타깃을 필수로 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Business Connector & Elite BNI Member
+[Task] Write a High-Converting BNI Referral / Testimonial Message
+
+[Member Expertise]
+- Member/Company: "${member}"
+- Expertise: "${expert}"
+- Unfair Advantage / Strength: "${strength || 'Excellent service and professionalism'}"
+
+[Target & Context]
+- Target Audience (Recipient): "${target}"
+- Target's Current Pain Point: "${painpoint || 'Needs a reliable professional in this field'}"
+
+[Value & Trust]
+- Benefit to Target: "${benefit || 'Solve their problem perfectly'}"
+- My Personal Guarantee / Trust factor: "${trust || 'Highly trusted BNI member'}"
+
+[Format & Tuning]
+- Message Format: "${type}"
+- Advanced Tuning Options: "${tuning}"
+
+[Constraints]
+- Step 1. Hook: Start by addressing the Target's "${painpoint}" or the value of the connection.
+- Step 2. Introduce the Member: Present "${member}" as the ultimate expert in "${expert}".
+- Step 3. Build Trust: Share my personal guarantee ("${trust}") and the member's strength ("${strength}").
+- Step 4. Value Proposition: Clearly state what the target will gain ("${benefit}").
+- Step 5. Call to Action: End with a smooth and polite CTA to connect them (e.g., "Shall I set up a group chat?").
+- Tone: Perfectly matched to the "${type}". Professional, warm, and highly credible.
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+# 🤝 [BNI 추천 메시지] ${member} 대표님 소개안
+## [메시지 초안]
+(Write the exact message body here according to the ${type} format...)
+
+---
+## 💡 [전달 및 활용 팁]
+- 이 메시지를 가장 효과적으로 전달하는 타이밍/방법을 2-3가지 제안해주세요.`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

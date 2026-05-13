@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이버 키워드 분석 도구 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .keyword-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+    .keyword-table th, .keyword-table td { border: 1px solid var(--bfy-border); padding: 12px; text-align: left; }
+    .keyword-table th { background: var(--bfy-bg); color: var(--bfy-navy); }
+    .badge-recommend { background: var(--bfy-primary-light); color: var(--bfy-primary); padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px; }
+    .badge-super { background: #ECFDF5; color: #10B981; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 12px; }
+    .loading-spinner { display: none; margin: 20px auto; width: 30px; height: 30px; border: 3px solid var(--bfy-primary-light); border-top: 3px solid var(--bfy-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">📊</div>
+      <h1>네이버 황금 키워드 발굴기</h1>
+      <p class="tool-subtitle">검색량 대비 문서 수가 적은 '블루오션 키워드'를 찾아내어 상위 노출 확률을 극대화합니다.</p>
+    </header>
+
+    <!-- STEP 1: 키워드 입력 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 분석 대상 핵심 키워드 입력</span>
+      </div>
+      <div class="step-body">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+          <div class="field-group">
+            <label class="field-label">메인 주제 키워드</label>
+            <input type="text" id="main-topic" placeholder="예: 수원 네일샵, 인계동 데이트, 소형SUV 추천">
+          </div>
+          <div class="field-group">
+            <label class="field-label">내 블로그 일 방문자 (옵션)</label>
+            <input type="number" id="daily-visitors" placeholder="예: 100">
+          </div>
+        </div>
+        <button class="btn-generate" onclick="searchKeywords()" id="search-btn" style="width: 100%; margin-top: 10px;">
+          🔍 연관 황금 키워드 추출하기
+        </button>
+        <div id="loading" class="loading-spinner"></div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 분석 결과 영역 -->
+    <section id="result-area" class="step-section" style="display:none;">
+      <div class="step-header">
+        <span>STEP 2: 경쟁도 분석 및 키워드 채택</span>
+        <span id="keyword-count" style="float: right; background: var(--bfy-primary-light); color: var(--bfy-primary); padding: 2px 10px; border-radius: 12px; font-size: 13px;">0개 발견</span>
+      </div>
+      <div class="step-body">
+        <div class="flow-box" style="margin-bottom: 20px; background: #f8fafc; border: 1px solid #e2e8f0;">
+          <h4 style="margin-bottom: 8px; font-size: 14px; color: var(--bfy-navy);">💡 지표 읽는 법</h4>
+          <div style="display: flex; gap: 15px; font-size: 13px; color: #475569;">
+            <span><strong style="color: #10B981;">⭐⭐ 강추:</strong> 블로그 지수가 낮아도 노출 가능</span>
+            <span><strong style="color: #3b82f6;">⭐ 추천:</strong> 유입 늘리기 좋은 가성비 키워드</span>
+            <span><strong>보통/높음:</strong> 상위 노출이 다소 어려울 수 있음</span>
+          </div>
+        </div>
+        
+        <div style="overflow-x: auto; border: 1px solid var(--bfy-border); border-radius: 8px;">
+          <table class="keyword-table" style="margin-top: 0;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th style="padding: 14px; font-weight: 600;">연관 키워드</th>
+                <th style="padding: 14px; font-weight: 600;">월간 검색량</th>
+                <th style="padding: 14px; font-weight: 600;">블로그 문서수</th>
+                <th style="padding: 14px; font-weight: 600;">경쟁도 진단</th>
+                <th style="padding: 14px; font-weight: 600; text-align: center;">액션</th>
+              </tr>
+            </thead>
+            <tbody id="keyword-list">
+              <!-- 결과가 여기에 동적으로 생성됨 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    async function searchKeywords() {
+      const topic = document.getElementById('main-topic').value;
+      const visitors = parseInt(document.getElementById('daily-visitors').value) || 0;
+      
+      if (!topic) {
+        alert('주제 키워드를 입력해주세요.');
+        return;
+      }
+
+      const searchBtn = document.getElementById('search-btn');
+      const loading = document.getElementById('loading');
+      const resultArea = document.getElementById('result-area');
+      const listBody = document.getElementById('keyword-list');
+
+      searchBtn.disabled = true;
+      searchBtn.innerHTML = '분석 중입니다...';
+      loading.style.display = 'block';
+      resultArea.style.display = 'none';
+
+      try {
+        // 실제 API 연동 시 사용할 로직
+        // const response = await fetch(`/api/naver-search?keyword=${encodeURIComponent(topic)}&type=keyword`);
+        // const data = await response.json();
+        throw new Error('Local environment fallback');
+      } catch (e) {
+        console.log('Using mock data for UI demonstration');
+        setTimeout(() => {
+          showMockData(topic, visitors);
+          searchBtn.disabled = false;
+          searchBtn.innerHTML = '🔍 연관 황금 키워드 추출하기';
+          loading.style.display = 'none';
+        }, 800);
+      }
+    }
+
+    function calcCompetition(search, blog, visitors) {
+      if (search < 10) return { label: '검색량 부족', color: '#94a3b8', bg: '#f1f5f9' };
+      const ratio = blog / search;
+      
+      if (ratio < 3) return { label: '⭐⭐ 강추', color: '#059669', bg: '#d1fae5', recommend: true };
+      if (ratio < 8) return { label: '⭐ 추천', color: '#2563eb', bg: '#dbeafe', recommend: true };
+      if (ratio < 20) return { label: '보통', color: '#475569', bg: '#f1f5f9' };
+      return { label: '경쟁 높음', color: '#dc2626', bg: '#fee2e2' };
+    }
+
+    function showMockData(topic, visitors) {
+      const resultArea = document.getElementById('result-area');
+      const listBody = document.getElementById('keyword-list');
+      resultArea.style.display = 'block';
+      listBody.innerHTML = '';
+
+      const mocks = [
+        { key: topic + ' 추천', vol: 4500, blog: 8000 },
+        { key: topic + ' 가격', vol: 1200, blog: 2400 },
+        { key: '가성비 ' + topic, vol: 800, blog: 1500 },
+        { key: '가까운 ' + topic, vol: 2400, blog: 45000 },
+        { key: topic + ' 내돈내산', vol: 3500, blog: 89000 },
+        { key: topic + ' 후기', vol: 15000, blog: 250000 }
+      ];
+
+      mocks.forEach(m => {
+        const comp = calcCompetition(m.vol, m.blog, visitors);
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid #e2e8f0';
+        row.innerHTML = `
+          <td style="padding: 14px; font-weight: 500; color: #1e293b;">${m.key}</td>
+          <td style="padding: 14px; color: #475569;">${m.vol.toLocaleString()}</td>
+          <td style="padding: 14px; color: #475569;">${m.blog.toLocaleString()}</td>
+          <td style="padding: 14px;">
+            <span style="background: ${comp.bg}; color: ${comp.color}; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600;">${comp.label}</span>
+          </td>
+          <td style="padding: 14px; text-align: center;">
+            <button class="btn-copy" style="padding: 6px 12px; font-size: 12px; margin: 0;" onclick="sendToSeoTool('${m.key}')">SEO 설계 🚀</button>
+          </td>
+        `;
+        listBody.appendChild(row);
+      });
+      document.getElementById('keyword-count').textContent = mocks.length + '개 발견';
+      resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function sendToSeoTool(keyword) {
+      window.location.href = `naver-seo.html?keyword=${encodeURIComponent(keyword)}`;
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

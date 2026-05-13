@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>인스타 캡션 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">📸</div>
+      <h1>인스타 캡션 생성기</h1>
+      <p class="tool-subtitle">체류시간을 늘리는 강력한 후킹과 세분화된 타깃팅으로 완벽한 인스타그램 캡션을 생성합니다.</p>
+    </header>
+
+    <!-- STEP 1: 목적 및 후킹 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 포스팅 목적 및 후킹 전략</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">포스팅 목적 (Goal)</label>
+          <div class="chip-group" data-id="post_goal">
+            <span class="chip-btn active" data-value="소통/일상 공유">🗣️ 소통/일상 공유 (관계 형성)</span>
+            <span class="chip-btn" data-value="전문 지식/정보 전달">📚 전문 지식/정보 전달 (신뢰 구축)</span>
+            <span class="chip-btn" data-value="이벤트/상품 판매">💰 이벤트/상품 판매 (전환 유도)</span>
+            <span class="chip-btn" data-value="고객 후기/사례 증명">🌟 고객 후기/사례 증명 (사회적 증거)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">첫 줄 후킹(Hook) 기법</label>
+          <div class="chip-group" data-id="hook_strategy">
+            <span class="chip-btn active" data-value="질문 던지기형">❓ 질문 던지기형 (호기심 자극)</span>
+            <span class="chip-btn" data-value="충격적 팩트 제시형">⚡ 충격적 팩트 제시형 (숫자/데이터 활용)</span>
+            <span class="chip-btn" data-value="강력한 공감형">🥺 강력한 공감형 (내 얘기 같네?)</span>
+            <span class="chip-btn" data-value="혜택 강조형">🎁 혜택 강조형 (이거 모르면 손해)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 타깃 및 톤앤매너 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 타깃 페르소나 및 톤앤매너</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">메인 타깃 고객 (구체적으로)</label>
+          <input type="text" id="target_audience" placeholder="예: 봄맞이 다이어트를 결심한 30대 직장인">
+        </div>
+        <div class="field-group">
+          <label class="field-label">브랜드 톤앤매너</label>
+          <div class="chip-group" data-id="tone_manner">
+            <span class="chip-btn active" data-value="친근하고 다정하게">😊 친근하고 다정하게</span>
+            <span class="chip-btn" data-value="전문적이고 신뢰감 있게">👔 전문적이고 신뢰감 있게</span>
+            <span class="chip-btn" data-value="감성적이고 세련되게">☕ 감성적이고 세련되게</span>
+            <span class="chip-btn" data-value="유머러스하고 찰지게">😂 유머러스하고 찰지게 (트렌디)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 핵심 정보 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 브랜드 및 핵심 콘텐츠 정보</span>
+      </div>
+      <div class="step-body">
+        <form id="tool-form">
+          <div class="field-group">
+            <label class="field-label">브랜드명 / 업종</label>
+            <input type="text" name="brand_name" id="brand_name" placeholder="예: 수원 네일샵 '핑크무드'">
+          </div>
+          <div class="field-group">
+            <label class="field-label">전달할 핵심 내용 및 제공 혜택</label>
+            <textarea name="core_message" id="core_message" placeholder="예: 5월 가정의 달 기념 동반 예약 시 20% 할인, 방문자 전원 큐티클 오일 증정 등 핵심 정보를 자세히 적어주세요."></textarea>
+          </div>
+          <div class="field-group">
+            <label class="field-label">포스팅 본문 길이</label>
+            <div class="chip-group" data-id="post_length">
+              <span class="chip-btn active" data-value="짧고 임팩트 있게">⚡ 짧고 임팩트 있게 (3~4문단)</span>
+              <span class="chip-btn" data-value="상세하고 길게">📖 상세하고 길게 (스토리텔링형)</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STEP 4: 세부 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 세부 튜닝 및 CTA</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">행동유도(CTA)</label>
+          <input type="text" id="cta_text" placeholder="예: 프로필 링크 클릭 후 예약하기, 댓글로 '신청' 남기기">
+        </div>
+        <div class="field-group">
+          <label class="field-label">상세 튜닝 옵션 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="tuning_options" data-multi="true">
+            <span class="chip-btn" data-value="이모지 적극 사용">이모지 적극 사용</span>
+            <span class="chip-btn" data-value="가독성을 위한 빈 줄바꿈 철저">빈 줄바꿈 철저 (가독성 향상)</span>
+            <span class="chip-btn" data-value="본문 텍스트 내 해시태그 최소화">본문 내 해시태그 최소화 (하단 몰빵)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 인스타 캡션 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+      
+      <!-- 인스타 미리보기 모의 UI -->
+      <div style="margin-top: 32px;">
+        <div class="section-label">미리보기 (Mockup)</div>
+        <div id="insta-mockup" style="background: white; border: 1px solid var(--bfy-border); border-radius: 12px; max-width: 400px; margin: 0 auto; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+          <div style="padding: 12px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #efefef;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);"></div>
+            <strong id="preview-brand-name" style="font-size: 14px;">Your_Brand</strong>
+          </div>
+          <div style="aspect-ratio: 1/1; background: #f8fafc; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-size: 40px;">🖼️</div>
+          <div style="padding: 12px;">
+            <div style="display: flex; gap: 12px; margin-bottom: 8px; font-size: 20px;">
+              <span>🤍</span> <span>💬</span> <span>✈️</span>
+            </div>
+            <p id="preview-content" style="font-size: 14px; line-height: 1.5; white-space: pre-wrap; color: #262626;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const goal = document.getElementById('post_goal').value || '소통/일상 공유';
+      const hook = document.getElementById('hook_strategy').value || '질문 던지기형';
+      const target = document.getElementById('target_audience').value || '전체';
+      const tone = document.getElementById('tone_manner').value || '친근하고 다정하게';
+      
+      const brand = document.getElementById('brand_name').value || '[브랜드명]';
+      const coreMsg = document.getElementById('core_message').value;
+      const length = document.getElementById('post_length').value || '짧고 임팩트 있게';
+      
+      const cta = document.getElementById('cta_text').value || '프로필 링크를 확인해주세요';
+      const tuning = document.getElementById('tuning_options').value || '없음';
+
+      if (!coreMsg) {
+        alert('전달할 핵심 내용 및 제공 혜택을 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Instagram Marketer & Professional Copywriter
+[Task] Write a highly engaging, conversion-optimized Instagram Caption
+
+[Marketing Context]
+- Post Goal: "${goal}"
+- Target Audience: "${target}"
+- Brand/Industry: "${brand}"
+- Core Message & Benefits: "${coreMsg}"
+
+[Copywriting Strategy]
+- Tone & Manner: "${tone}"
+- First Line Hook Strategy: "${hook}"
+- Post Length: "${length}"
+- Call to Action (CTA): "${cta}"
+- Detail Tuning Options: "${tuning}"
+
+[Constraints]
+- Hook: The very first line MUST follow the "${hook}" strategy to grab the "${target}"'s attention instantly. Stop the scroll.
+- Body: Organize the "${coreMsg}" smoothly following the "${tone}" style. Use "${length}" length.
+- Formatting: If "빈 줄바꿈 철저" is in the Detail Tuning Options, ensure there are clear empty lines between paragraphs to maximize readability on mobile screens.
+- Emojis: Adjust the use of emojis based on the Detail Tuning Options.
+- CTA: End the caption with the exact "${cta}" instruction, making it irresistible.
+- Hashtags: Generate exactly 30 SEO-optimized hashtags at the bottom (5 Mega, 10 Medium, 15 Niche) highly relevant to the context.
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+(Caption Text Here)
+
+#Hashtag1 #Hashtag2 ...`;
+
+      showResult(prompt);
+      
+      // 미리보기 업데이트
+      document.getElementById('preview-brand-name').textContent = brand;
+      document.getElementById('preview-content').textContent = `(AI가 생성할 캡션 예시)\n\n마케팅 전략이 반영된 매력적인 캡션이 여기에 표시됩니다.\n\n${cta}\n\n#해시태그 #마케팅 #인스타그램`;
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

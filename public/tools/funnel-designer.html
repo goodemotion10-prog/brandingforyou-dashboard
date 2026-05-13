@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마케팅 퍼널 설계 도구 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">🎯</div>
+      <h1>마케팅 퍼널 설계 도구</h1>
+      <p class="tool-subtitle">인지부터 최종 결제까지, 이탈률을 최소화하는 고도화된 AIDA 기반 퍼널을 설계합니다.</p>
+    </header>
+
+    <!-- STEP 1: 퍼널 목표 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 퍼널 전략 및 핵심 목표</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">퍼널 최종 목표 (Goal)</label>
+          <div class="chip-group" data-id="funnel_goal">
+            <span class="chip-btn active" data-value="고관여 상품 결제">💳 고관여 상품 결제 (세일즈 극대화)</span>
+            <span class="chip-btn" data-value="DB/리드 수집">📝 DB/리드 수집 (이메일/연락처 확보)</span>
+            <span class="chip-btn" data-value="커뮤니티/멤버십 가입">🤝 커뮤니티/멤버십 가입 유도</span>
+            <span class="chip-btn" data-value="단순 채널 구독">📣 채널 구독 및 트래픽 확장</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">가장 시급한 문제 (Pain Point)</label>
+          <div class="chip-group" data-id="main_painpoint">
+            <span class="chip-btn active" data-value="인지도 부족">👻 인지도 부족 (신규 유입 없음)</span>
+            <span class="chip-btn" data-value="전환율 저조">📉 전환율 저조 (조회수는 높은데 안삼)</span>
+            <span class="chip-btn" data-value="신뢰도 부족">🤔 신뢰도 부족 (확신/설득 부족)</span>
+            <span class="chip-btn" data-value="재구매율 낮음">🏃‍♂️ 재구매율 낮음 (단발성 구매)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 타깃 및 마그넷 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 타깃 페르소나 및 리드 마그넷</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">초정밀 타깃 페르소나 (구체적으로)</label>
+          <textarea id="target_persona" placeholder="예: 자신의 전문성을 수익화하고 싶지만, 마케팅 용어만 들으면 머리가 아픈 30대 직장인"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">리드 마그넷 (미끼 상품) 유형</label>
+          <div class="chip-group" data-id="lead_magnet">
+            <span class="chip-btn active" data-value="무료 전자책/PDF">📄 무료 전자책/PDF 가이드</span>
+            <span class="chip-btn" data-value="1:1 무료 컨설팅/진단">📞 1:1 무료 컨설팅/진단</span>
+            <span class="chip-btn" data-value="프롬프트/템플릿">⚙️ 프롬프트/템플릿 원본 파일</span>
+            <span class="chip-btn" data-value="시크릿 VOD 영상">🎬 시크릿 VOD 강의 영상</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 브랜드 및 상품 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 브랜드 및 상품 정보</span>
+      </div>
+      <div class="step-body">
+        <form id="tool-form">
+          <div class="field-group">
+            <label class="field-label">브랜드명 / 업종</label>
+            <input type="text" name="brand_name" id="brand_name" placeholder="예: 브랜딩포유 (AI 마케팅 교육)">
+          </div>
+          <div class="field-group">
+            <label class="field-label">주력 판매 상품/서비스명</label>
+            <input type="text" id="product_name" placeholder="예: 퍼스널 브랜딩 1:1 심화 컨설팅">
+          </div>
+          <div class="field-group">
+            <label class="field-label">상품 단가 수준</label>
+            <div class="chip-group" data-id="price_range">
+              <span class="chip-btn active" data-value="1만원 미만">🪙 1만원 미만 (초저관여)</span>
+              <span class="chip-btn" data-value="1~5만원">💵 1~5만원 (저관여)</span>
+              <span class="chip-btn" data-value="5~20만원">💸 5~20만원 (중관여)</span>
+              <span class="chip-btn" data-value="20만원 이상">💎 20~100만원 (고관여)</span>
+              <span class="chip-btn" data-value="100만원 이상">👑 100만원 이상 (초고관여)</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STEP 4: 트래픽 및 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 트래픽 소스 및 세부 튜닝</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">주요 트래픽 소스 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="traffic_sources" data-multi="true">
+            <span class="chip-btn" data-value="인스타그램">📷 인스타그램 (릴스/피드)</span>
+            <span class="chip-btn" data-value="네이버 블로그">📝 네이버 블로그 (검색)</span>
+            <span class="chip-btn" data-value="유튜브">🎬 유튜브 (롱폼/쇼츠)</span>
+            <span class="chip-btn" data-value="스레드">🧵 스레드 (텍스트 바이럴)</span>
+            <span class="chip-btn" data-value="퍼포먼스 광고">🎯 퍼포먼스 광고 (Meta/Google)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">퍼널 상세 튜닝 옵션 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="tuning_options" data-multi="true">
+            <span class="chip-btn" data-value="고객의 숨은 저항감 반박 메시지 기획 추가">고객의 숨은 저항감 반박 메시지 기획</span>
+            <span class="chip-btn" data-value="결제 직전 업셀링(추가 구매) 전략 포함">결제 직전 업셀링(추가 구매) 전략 포함</span>
+            <span class="chip-btn" data-value="단계별 A/B 테스트 지표 제안">단계별 A/B 테스트 지표 제안</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 마케팅 퍼널 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const goal = document.getElementById('funnel_goal').value || '고관여 상품 결제';
+      const painpoint = document.getElementById('main_painpoint').value || '인지도 부족';
+      const persona = document.getElementById('target_persona').value;
+      const leadMagnet = document.getElementById('lead_magnet').value || '무료 전자책/PDF';
+      
+      const brand = document.getElementById('brand_name').value || '브랜딩포유';
+      const product = document.getElementById('product_name').value;
+      const price = document.getElementById('price_range').value || '1만원 미만';
+      
+      const traffic = document.getElementById('traffic_sources').value || '기본 SNS 채널';
+      const tuning = document.getElementById('tuning_options').value || '없음';
+
+      if (!product || !persona) {
+        alert('주력 판매 상품과 타깃 페르소나를 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Business Strategist & Master Funnel Architect
+[Task] Design a Highly-Optimized 4-Stage Marketing Funnel Strategy (AIDA Model)
+
+[Business Context]
+- Brand/Industry: "${brand}"
+- Main Product/Service: "${product}"
+- Price Range: "${price}"
+- Ultimate Funnel Goal: "${goal}"
+- Current Biggest Pain Point: "${painpoint}"
+
+[Targeting & Traffic Context]
+- Target Persona: "${persona}"
+- Selected Lead Magnet: "${leadMagnet}"
+- Main Traffic Sources: "${traffic}"
+
+[Funnel Tuning Options]
+- Additional Requirements: "${tuning}"
+
+[Constraints]
+- Step 1: Awareness (How will they find the brand through the "${traffic}"?)
+- Step 2: Interest (How will we capture their attention and deliver the "${leadMagnet}"?)
+- Step 3: Desire (How will we build immense trust and create buying intent for "${product}"?)
+- Step 4: Action (How do we securely close the sale and achieve "${goal}"?)
+- For each step, provide: [Objective], [Core Content/Mechanism], [Copywriting Hook].
+- If any [Funnel Tuning Options] are selected (like Objection Handling or Upselling), strictly incorporate them into the appropriate stages.
+- Explicitly provide actionable solutions for the "${painpoint}".
+
+[IMPORTANT REQUIREMENT]
+- All strategies, psychological triggers, and copywriting examples MUST be written entirely in KOREAN (한국어).
+
+[Output Format]
+# Marketing Master Funnel Strategy: ${brand}
+## Core Strategy Overview
+- ...
+
+---
+## Step 1: Awareness (인지)
+- Objective: ...
+- Mechanism: ...
+- ...
+
+(Continue through Step 4)
+
+---
+## Advanced Funnel Architecture
+- How to solve [${painpoint}]: ...
+- Lead Magnet Application (${leadMagnet}): ...
+- Advanced Tactics (Tuning Options Applied): ...`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

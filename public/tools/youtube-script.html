@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>유튜브 스크립트 구조 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">🎬</div>
+      <h1>유튜브 스크립트 구조 생성기</h1>
+      <p class="tool-subtitle">이탈률을 막는 3초 후킹부터 시청 지속시간을 극대화하는 심리적 대본 구조를 기획합니다.</p>
+    </header>
+
+    <!-- STEP 1: 포맷 및 목표 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 영상 포맷 및 핵심 목표</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">영상 포맷 (길이)</label>
+          <div class="chip-group" data-id="video_format">
+            <span class="chip-btn active" data-value="숏폼 (1분 이내)">📱 숏폼 (Shorts/Reels 1분 이내)</span>
+            <span class="chip-btn" data-value="미드폼 (3~5분)">🎬 미드폼 (빠른 정보 전달 3~5분)</span>
+            <span class="chip-btn" data-value="롱폼 (10분 이상)">🎥 롱폼 (심층 분석/강의 10분 이상)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">영상의 최종 목적</label>
+          <div class="chip-group" data-id="video_goal">
+            <span class="chip-btn active" data-value="조회수/떡상 유도">🚀 조회수/떡상 (알고리즘 노출)</span>
+            <span class="chip-btn" data-value="퍼스널 브랜딩">🌟 퍼스널 브랜딩 (팬덤/신뢰 구축)</span>
+            <span class="chip-btn" data-value="상품/서비스 세일즈">💰 상품/서비스 세일즈 (전환 유도)</span>
+            <span class="chip-btn" data-value="트래픽 외부 유도">🔗 트래픽 외부 유도 (링크 클릭)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 타깃 및 심리 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 타깃 시청자 및 심리 분석</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">초정밀 타깃 시청자</label>
+          <input type="text" id="target_audience" placeholder="예: 유튜브를 시작하고 싶지만 편집이 두려운 40대 자영업자">
+        </div>
+        <div class="field-group">
+          <label class="field-label">시청자가 겪고 있는 최악의 문제 (Pain Point)</label>
+          <textarea id="pain_point" placeholder="예: 프리미어 프로를 결제했지만 화면만 봐도 막막해서 1달째 방치 중임"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">시청자가 얻어갈 압도적 가치 (Benefit)</label>
+          <textarea id="core_value" placeholder="예: 캡컷(CapCut)을 이용해 스마트폰 하나로 10분 만에 숏폼 뚝딱 만드는 법"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 후킹 전략 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 오프닝 후킹 전략</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">이탈을 막는 3초 후킹(Hook) 기법</label>
+          <div class="chip-group" data-id="hook_strategy">
+            <span class="chip-btn active" data-value="충격적 결과 먼저 보여주기">😲 충격적 결과 선공개 (비포/애프터)</span>
+            <span class="chip-btn" data-value="타깃의 뼈 때리는 공감 멘트">🦴 뼈 때리는 공감/팩트 폭행</span>
+            <span class="chip-btn" data-value="기존 상식을 뒤집는 발언">🔄 상식을 뒤집는 파격적 발언 (어그로)</span>
+            <span class="chip-btn" data-value="무조건 손해보는 상황 경고">⚠️ 무조건 손해보는 상황 경고형</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">채널명 / 브랜드명</label>
+          <input type="text" id="brand_name" placeholder="예: 브랜딩포유 TV">
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: 세부 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 대본 튜닝 및 CTA</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">행동유도(CTA)</label>
+          <input type="text" id="cta_text" placeholder="예: 고정 댓글에서 무료 템플릿 다운로드 받기">
+        </div>
+        <div class="field-group">
+          <label class="field-label">대본 상세 튜닝 옵션 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="tuning_options" data-multi="true">
+            <span class="chip-btn" data-value="화면/자막 연출(B-roll) 지시문 상세 추가">화면/자막(B-roll) 연출 지시문 추가</span>
+            <span class="chip-btn" data-value="시청 지속(Retention)을 위한 중간 브릿지 멘트 삽입">시청 지속(Retention)용 브릿지 멘트 삽입</span>
+            <span class="chip-btn" data-value="말을 더듬지 않도록 끊어 읽기 좋은 짧은 문장 사용">말하기 편한 초단문(짧은 문장) 위주 작성</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 유튜브 스크립트 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const format = document.getElementById('video_format').value || '미드폼 (3~5분)';
+      const goal = document.getElementById('video_goal').value || '조회수/떡상 유도';
+      
+      const target = document.getElementById('target_audience').value;
+      const painPoint = document.getElementById('pain_point').value;
+      const coreValue = document.getElementById('core_value').value;
+      
+      const hook = document.getElementById('hook_strategy').value || '충격적 결과 먼저 보여주기';
+      const brand = document.getElementById('brand_name').value || '브랜딩포유';
+      
+      const cta = document.getElementById('cta_text').value || '구독과 좋아요 부탁드립니다';
+      const tuning = document.getElementById('tuning_options').value || '없음';
+
+      if (!target || !coreValue) {
+        alert('타깃 시청자와 전달할 핵심 가치를 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert YouTube Producer, Retention Hacker & Master Scriptwriter
+[Task] Write a highly engaging YouTube Script Structure and Copy
+
+[Video Strategy Context]
+- Channel/Brand Name: "${brand}"
+- Video Format/Length: "${format}"
+- Ultimate Video Goal: "${goal}"
+
+[Audience Psychology]
+- Target Audience: "${target}"
+- Their Biggest Pain Point: "${painPoint || 'Identify the general pain point for this target'}"
+- Core Value/Solution to Deliver: "${coreValue}"
+
+[Scriptwriting Mechanics]
+- Opening Hook Strategy: "${hook}"
+- Call to Action (CTA): "${cta}"
+- Advanced Script Tuning Options: "${tuning}"
+
+[Constraints]
+- Suggest 3 highly clickable (High CTR), curiosity-inducing Titles.
+- Structure: Hook (0-15s) -> Intro/Agitation -> Main Body (Value) -> Outro (CTA).
+- Hook: The first 5 seconds MUST use the "${hook}" strategy to grab attention instantly and prevent swiping/clicking away.
+- Body: Resolve the "${painPoint}" by delivering the "${coreValue}".
+- If "말하기 편한 초단문" is in Tuning Options, ensure all spoken lines are short, punchy, and conversational.
+- If "화면/자막(B-roll) 연출 지시문 추가" is selected, include [Video/B-roll] or [Text Overlay] tags before the spoken text.
+- If "Retention용 브릿지 멘트 삽입" is selected, add curiosity loops before moving to the next point (e.g., "But wait, there's a fatal mistake most people make...").
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+# [High CTR Titles & Thumbnail Ideas]
+1. Title: ... / Thumbnail Idea: ...
+2. ...
+
+---
+# [Master Script]
+## 1. The 3-Second Hook
+[Visual] ...
+[Script] ...
+
+## 2. Intro & Problem Agitation
+...
+
+## 3. Main Body (The Solution)
+...
+
+## 4. Outro & CTA
+[Script] ... ${cta} ...`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마케팅 제안서 구조 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">📋</div>
+      <h1>마케팅 제안서 구조 생성기</h1>
+      <p class="tool-subtitle">클라이언트의 페인포인트(Pain-Point)를 날카롭게 찌르고 압도적인 해결책을 제시하는 5단계 제안서를 기획합니다.</p>
+    </header>
+
+    <!-- STEP 1: 타깃 및 사업 모델 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 클라이언트 및 사업 모델(B2B/B2C)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">클라이언트명 / 브랜드명</label>
+          <input type="text" id="client_name" placeholder="예: (주)대한식품">
+        </div>
+        <div class="field-group">
+          <label class="field-label">사업 모델 (어필 포인트가 달라집니다)</label>
+          <div class="chip-group" data-id="business_model">
+            <span class="chip-btn active" data-value="B2C (일반 고객)">🛒 B2C (일반 고객 대상, 감성/트렌드/매출 중심)</span>
+            <span class="chip-btn" data-value="B2B (기업/기관)">🏢 B2B (기업 대상, 신뢰/ROI/논리 중심)</span>
+            <span class="chip-btn" data-value="B2G (공공/정부)">🏛️ B2G (정부/공공 대상, 규정/안정성/명분 중심)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 현황 진단 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 클라이언트 문제점 및 상황 진단</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">현재 가장 큰 문제점 (Pain Point) 및 현황</label>
+          <textarea id="client_painpoint" placeholder="예: 신제품을 출시했으나 타깃 2030의 인지도가 바닥임. 기존 인하우스 마케터 1명이 모든 걸 감당하느라 콘텐츠 퀄리티가 낮음."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">예산 및 프로젝트 기간 (선택)</label>
+          <input type="text" id="budget_timeline" placeholder="예: 월 500만원, 총 6개월 계약">
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 솔루션 및 업무 범위 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 핵심 솔루션 및 업무 범위(SOW)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">우리가 제안하는 단 하나의 핵심 솔루션 (One-line)</label>
+          <input type="text" id="proposed_solution" placeholder="예: 숏폼 릴스 기반 바이럴 브랜딩 + 리타겟팅 퍼포먼스 광고 믹스">
+        </div>
+        <div class="field-group">
+          <label class="field-label">제공할 구체적인 업무 범위 (Scope of Work)</label>
+          <textarea id="service_scope" placeholder="예: 1. 주 3회 인스타 릴스 기획/촬영/편집, 2. 메타 스폰서드 광고 A/B 테스트 및 운영, 3. 월 1회 성과 리포팅"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: 기대 효과 및 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 기대 효과 및 제안서 튜닝</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">제안 성공 시 얻게 될 압도적 결과 (목표)</label>
+          <input type="text" id="expected_result" placeholder="예: 6개월 내 ROAS 300% 달성, 핵심 타깃 도달 100만 회 보장">
+        </div>
+        <div class="field-group">
+          <label class="field-label">제안서 상세 튜닝 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="proposal_tuning" data-multi="true">
+            <span class="chip-btn active" data-value="철저한 데이터/수치 기반 분석적 톤앤매너로 작성">철저한 데이터/수치 기반 분석적 톤 유지</span>
+            <span class="chip-btn" data-value="타임라인/마일스톤을 구체적인 표(Table) 형태로 제공">타임라인/마일스톤을 '표(Table)' 형태로 추가</span>
+            <span class="chip-btn" data-value="경쟁사 약점 및 자사 우위(포지셔닝) 분석 파트 포함">경쟁사 대비 우리의 압도적 우위(포지셔닝) 강조</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 마케팅 제안서 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const client = document.getElementById('client_name').value || '클라이언트';
+      const model = document.getElementById('business_model').value || 'B2C (일반 고객)';
+      
+      const painpoint = document.getElementById('client_painpoint').value;
+      const budget = document.getElementById('budget_timeline').value || '추후 협의';
+      
+      const solution = document.getElementById('proposed_solution').value;
+      const scope = document.getElementById('service_scope').value;
+      
+      const result = document.getElementById('expected_result').value;
+      const tuning = document.getElementById('proposal_tuning').value || '전문적이고 신뢰감 있는 톤앤매너';
+
+      if (!painpoint || !solution) {
+        alert('클라이언트의 문제점과 핵심 솔루션을 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Marketing Director, Business Strategist & B2B/B2C Sales Master
+[Task] Create a Highly Persuasive 5-Step Marketing Proposal Structure
+
+[Client & Situation Context]
+- Target Client/Brand: "${client}"
+- Business Model Type: "${model}" (Adjust your persuasion logic based on this. B2B needs logic/ROI, B2C needs trend/emotion).
+- Client's Critical Pain Point: "${painpoint}"
+- Budget & Timeline: "${budget}"
+
+[Our Solution Strategy]
+- Proposed Core Solution: "${solution}"
+- Detailed Scope of Work (SOW): "${scope || 'Standard Marketing Scope'}"
+- Expected Ultimate ROI/Goal: "${result || 'Increase Revenue & Brand Awareness'}"
+
+[Advanced Tuning & Mechanics]
+- Tuning Options Applied: "${tuning}"
+
+[Constraints]
+- Follow a highly logical and persuasive 5-Step Pitch Structure.
+- Step 1: Situation Analysis (Why Now? Deeply empathize with the "${painpoint}").
+- Step 2: The Core Strategy (Introduce "${solution}" as the ONLY logical answer).
+- Step 3: Execution & Scope (Breakdown the SOW clearly. If 'Table' tuning is selected, use a Markdown table for timeline).
+- Step 4: Competitive Edge (Why Us? Address this strongly, especially if the positioning tuning is selected).
+- Step 5: Vision & ROI (Paint a vivid picture of the "${result}" to close the deal).
+- Tone: Highly professional, confident, and perfectly tailored to the "${model}" business type.
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+# 📄 [제안서] ${client} 성공을 위한 마케팅 전략 제안
+## 1. 현황 분석 및 문제 진단 (Why Now?)
+...
+
+## 2. 핵심 해결 전략 (Core Strategy)
+...
+
+## 3. 세부 실행 계획 및 업무 범위 (Execution & SOW)
+...
+
+## 4. 우리의 차별화 포인트 (Why Us?)
+...
+
+## 5. 기대 효과 및 프로젝트 비전 (Vision & ROI)
+...`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스레드·블로그 글 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">✍️</div>
+      <h1>스레드·블로그 글 생성기</h1>
+      <p class="tool-subtitle">숏폼 텍스트(스레드)와 롱폼 SEO 텍스트(블로그)를 하나의 핵심 주제로 동시 기획합니다.</p>
+    </header>
+
+    <!-- STEP 1: 검색 의도 및 플랫폼 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 검색 의도 및 플랫폼 전략</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">블로그 검색 의도 (Search Intent)</label>
+          <div class="chip-group" data-id="search_intent">
+            <span class="chip-btn active" data-value="정보 탐색형">🔍 정보 탐색형 (How-to, 방법론)</span>
+            <span class="chip-btn" data-value="비교/리뷰형">⚖️ 비교/리뷰형 (A vs B, 장단점)</span>
+            <span class="chip-btn" data-value="구매/결정형">💳 구매/결정형 (추천, 혜택 강조)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">메인 타깃 플랫폼 비중</label>
+          <div class="chip-group" data-id="platform_weight">
+            <span class="chip-btn active" data-value="블로그 중심">📝 블로그 중심 (상세 SEO 롱폼)</span>
+            <span class="chip-btn" data-value="스레드 중심">🧵 스레드 중심 (바이럴 숏폼)</span>
+            <span class="chip-btn" data-value="50:50 균형">⚖️ 50:50 완벽 균형</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 프레임워크 및 톤앤매너 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 글쓰기 프레임워크 및 톤앤매너</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">글쓰기 프레임워크 (구조)</label>
+          <div class="chip-group" data-id="writing_framework">
+            <span class="chip-btn active" data-value="PREP 구조">📢 PREP 구조 (결론 먼저 두괄식)</span>
+            <span class="chip-btn" data-value="PAS 구조">💊 PAS 구조 (문제-심화-해결책)</span>
+            <span class="chip-btn" data-value="스토리텔링">📖 스토리텔링 (경험 기반 에세이)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">톤앤매너 (문체)</label>
+          <div class="chip-group" data-id="tone_manner">
+            <span class="chip-btn active" data-value="전문적이고 신뢰감 있게">👨‍🏫 전문적이고 신뢰감 있게</span>
+            <span class="chip-btn" data-value="담백하고 직설적인">🎯 담백하고 직설적인 (팩트폭행)</span>
+            <span class="chip-btn" data-value="친근하고 다정하게">😊 친근하고 다정하게 (이웃처럼)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 핵심 정보 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 핵심 정보 및 타깃</span>
+      </div>
+      <div class="step-body">
+        <form id="tool-form">
+          <div class="field-group">
+            <label class="field-label">브랜드명 / 필명</label>
+            <input type="text" name="brand_name" id="brand_name" placeholder="예: 브랜딩포유">
+          </div>
+          <div class="field-group">
+            <label class="field-label">핵심 키워드 (SEO 뼈대)</label>
+            <input type="text" id="main_topic" placeholder="예: 퇴사 후 1인 기업가로 성공하는 법">
+          </div>
+          <div class="field-group">
+            <label class="field-label">타깃 독자 (누구를 위해 쓰는가?)</label>
+            <input type="text" id="target_audience" placeholder="예: 무자본 창업을 고민 중인 30대 직장인">
+          </div>
+          <div class="field-group">
+            <label class="field-label">반드시 포함될 내용 (메모/개요)</label>
+            <textarea id="key_points" placeholder="예: 1. 초기 자본금 설정 방법, 2. SNS 브랜딩의 중요성, 3. 수익 파이프라인 구축 등 구체적인 포인트를 적어주세요."></textarea>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STEP 4: AEO 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: AEO 튜닝 및 CTA</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">행동유도(CTA)</label>
+          <input type="text" id="cta_text" placeholder="예: 무료 컨설팅 신청하기, 서로이웃 추가">
+        </div>
+        <div class="field-group">
+          <label class="field-label">AEO (AI 검색엔진 최적화) 튜닝 옵션</label>
+          <div class="chip-group" data-id="aeo_tuning" data-multi="true">
+            <span class="chip-btn" data-value="구글 AI 오버뷰 최적화 (목차/리스트 형태 강조)">구글 AI 오버뷰 최적화 (리스트 강조)</span>
+            <span class="chip-btn" data-value="네이버 CUE 최적화 (Q&A 블록 추가)">네이버 CUE 최적화 (Q&A 블록 추가)</span>
+            <span class="chip-btn" data-value="정보성 팩트 체크 및 출처 표기 강화">객관적 팩트/출처 표기 강화</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 다중 플랫폼 콘텐츠 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const intent = document.getElementById('search_intent').value || '정보 탐색형';
+      const weight = document.getElementById('platform_weight').value || '블로그 중심';
+      
+      const framework = document.getElementById('writing_framework').value || 'PREP 구조';
+      const tone = document.getElementById('tone_manner').value || '전문적이고 신뢰감 있게';
+      
+      const brand = document.getElementById('brand_name').value || '브랜딩포유';
+      const topic = document.getElementById('main_topic').value;
+      const target = document.getElementById('target_audience').value || '일반 대중';
+      const points = document.getElementById('key_points').value;
+      
+      const cta = document.getElementById('cta_text').value || '공감과 댓글 부탁드립니다';
+      const aeoTuning = document.getElementById('aeo_tuning').value || '없음';
+
+      if (!topic) {
+        alert('핵심 키워드를 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Content Marketer, SEO Specialist & Viral Thread Creator
+[Task] Write a highly optimized Multi-Platform Content Set (Threads & Naver Blog)
+
+[Content Context]
+- Main Keyword / Topic: "${topic}"
+- Target Audience: "${target}"
+- Key Points to Include: "${points || 'Structure professionally based on the topic'}"
+- Brand/Author Name: "${brand}"
+
+[Strategic Directions]
+- Blog Search Intent: "${intent}"
+- Platform Weighting: "${weight}"
+- Writing Framework: "${framework}"
+- Tone & Manner: "${tone}"
+- Call to Action (CTA): "${cta}"
+- AEO (AI Engine Optimization) Tuning: "${aeoTuning}"
+
+[Constraints - Part 1: Threads (Viral Short-form)]
+- Write a 5-7 part thread (타래).
+- Style: Punchy, highly engaging, optimized for mobile scrolling.
+- The 1st thread MUST be a strong hook.
+- Use appropriate emojis and line breaks.
+- The last thread MUST include the CTA.
+
+[Constraints - Part 2: Naver Blog (SEO Long-form)]
+- Suggest 3 highly optimized SEO Titles that satisfy the "${intent}".
+- Structure the blog strictly following the "${framework}" framework.
+- Integrate the [Key Points] naturally into detailed subheadings (H2, H3).
+- Apply the [AEO Tuning] instructions perfectly (e.g., if Q&A block is required, add it at the bottom).
+- End with a summary and the "${cta}".
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+# [Threads Version: 바이럴 숏폼]
+1/ ...
+2/ ...
+
+---
+# [Naver Blog Version: SEO 롱폼]
+## SEO Title Options:
+1. ...
+
+## Blog Body Content:
+(Write the full, rich blog content here based on the framework and AEO tuning)`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>해시태그 효과 분석기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">#️⃣</div>
+      <h1>해시태그 믹스 전략 분석기</h1>
+      <p class="tool-subtitle">단순한 해시태그 나열을 넘어, 상위 노출을 위한 대/중/소 규모 황금 비율을 진단합니다.</p>
+    </header>
+
+    <!-- STEP 1: 해시태그 입력 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 해시태그 원본 입력</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">현재 사용 중인 해시태그 뭉치 (최대 30개)</label>
+          <textarea id="hashtag_input" placeholder="복사한 해시태그를 그대로 붙여넣기 하세요.&#13;&#10;예: #수원네일 #수원네일샵 #인계동네일 ... (쉼표나 줄바꿈, 띄어쓰기로 자동 구분됩니다)" style="height: 120px;"></textarea>
+          <p class="caption" style="margin-top: 8px;">입력 후 아래 버튼을 눌러 개별 태그로 분리합니다.</p>
+        </div>
+        <button class="btn-copy" onclick="parseTags()" style="width: 100%; background: var(--bfy-bg); border: 1px dashed var(--bfy-primary); margin-bottom: 0px; font-weight: 600;">
+          ⬇️ 해시태그 분리 및 스텝 2로 이동
+        </button>
+      </div>
+    </section>
+
+    <!-- STEP 2: 태그 분류 -->
+    <section id="step2_section" class="step-section" style="display: none;">
+      <div class="step-header">
+        <span>STEP 2: 태그 규모 분류 (대/중/소)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">각 태그의 누적 게시물 수를 기준으로 규모를 선택하세요</label>
+          <p class="caption" style="margin-top: -5px; margin-bottom: 12px;">대형(100만 이상), 중형(10만~100만), 소형(10만 미만)</p>
+          <div id="tag_rows" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px;">
+            <!-- 태그별 행이 여기에 생성됨 -->
+          </div>
+        </div>
+        <button class="btn-generate" onclick="analyzeTags()" style="margin-top: 15px; width: 100%;">
+          📊 황금 비율 진단하기
+        </button>
+      </div>
+    </section>
+
+    <!-- 분석 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>해시태그 믹스 전략 진단 리포트</h3>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; align-items: center; margin-bottom: 30px;">
+        <div style="position: relative; width: 100%; max-width: 250px; margin: 0 auto;">
+          <canvas id="ratioChart"></canvas>
+        </div>
+        <div id="diagnosis_box" class="result-box" style="margin-top: 0; min-height: auto; border-left: 4px solid var(--bfy-primary);">
+          <!-- 진단 메시지 -->
+        </div>
+      </div>
+
+      <div class="section-label" style="margin-bottom: 12px;">💡 브랜딩포유 최적화 가이드</div>
+      <div id="guide_box" class="result-box" style="font-size: 14px; background: #f8fafc;">
+        <!-- 가이드 메시지 -->
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    let currentChart = null;
+
+    function parseTags() {
+      const input = document.getElementById('hashtag_input').value;
+      const tags = input.split(/[\n, ]+/)
+        .map(t => t.trim().replace(/^#/, ''))
+        .filter(Boolean);
+
+      if (tags.length === 0) {
+        alert('해시태그를 하나 이상 입력해주세요.');
+        return;
+      }
+
+      if (tags.length > 30) {
+        alert('인스타그램 해시태그는 최대 30개까지만 분석 가능합니다. 앞의 30개만 분석합니다.');
+      }
+
+      const step2 = document.getElementById('step2_section');
+      const rows = document.getElementById('tag_rows');
+      rows.innerHTML = '';
+      
+      tags.slice(0, 30).forEach((tag, idx) => {
+        const div = document.createElement('div');
+        div.style = 'display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--bfy-border); box-shadow: 0 1px 2px rgba(0,0,0,0.02);';
+        div.innerHTML = `
+          <span style="font-size: 14px; font-weight: 600; color: #1e293b; display: inline-block; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">#${tag}</span>
+          <select class="tag-size-select" data-tag="${tag}" style="width: auto; padding: 6px 10px; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; outline: none; background: #f8fafc;">
+            <option value="large">🔥 대형</option>
+            <option value="medium" selected>⭐️ 중형</option>
+            <option value="small">🌱 소형</option>
+          </select>
+        `;
+        rows.appendChild(div);
+      });
+
+      step2.style.display = 'block';
+      document.getElementById('result-area').style.display = 'none';
+      step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function analyzeTags() {
+      const selects = document.querySelectorAll('.tag-size-select');
+      if (selects.length === 0) {
+        alert('먼저 태그 목록을 생성해주세요.');
+        return;
+      }
+
+      const counts = { large: 0, medium: 0, small: 0 };
+      selects.forEach(s => counts[s.value]++);
+
+      const total = selects.length;
+      const ratios = {
+        large: (counts.large / total * 100).toFixed(0),
+        medium: (counts.medium / total * 100).toFixed(0),
+        small: (counts.small / total * 100).toFixed(0)
+      };
+
+      document.getElementById('result-area').style.display = 'block';
+      renderChart(counts);
+      renderDiagnosis(counts, ratios, total);
+      
+      document.getElementById('result-area').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderChart(counts) {
+      const ctx = document.getElementById('ratioChart').getContext('2d');
+      if (currentChart) currentChart.destroy();
+
+      currentChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['대형 (100만+)', '중형 (10만~)', '소형 (~10만)'],
+          datasets: [{
+            data: [counts.large, counts.medium, counts.small],
+            backgroundColor: ['#ef4444', '#3b82f6', '#10b981'],
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            hoverOffset: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { 
+              position: 'bottom',
+              labels: { padding: 20, font: { family: "'Pretendard', sans-serif" } }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+    }
+
+    function renderDiagnosis(counts, ratios, total) {
+      const diagBox = document.getElementById('diagnosis_box');
+      const guideBox = document.getElementById('guide_box');
+      
+      let grade = '✅ 전략적으로 우수한 해시태그 믹스입니다.';
+      let msg = '현재 대/중/소형 태그의 비율이 이상적으로 분배되어 있습니다. 상위 노출과 지속적인 트래픽 유입이 모두 기대되는 구조입니다.';
+      let color = 'var(--bfy-success)';
+      let borderCol = 'var(--bfy-success)';
+
+      const largeRatio = counts.large / total;
+      const smallRatio = counts.small / total;
+
+      if (largeRatio > 0.4) {
+        grade = '⚠️ 대형 태그의 비중이 너무 높습니다.';
+        msg = '경쟁이 매우 치열한 대형 태그 위주로 구성되어 있습니다. 유명 계정이 아니라면 게시물이 순식간에 밀려나 노출되지 않을 확률이 매우 높습니다.';
+        color = 'var(--bfy-danger)';
+        borderCol = 'var(--bfy-danger)';
+      } else if (smallRatio < 0.2) {
+        grade = '⚠️ 소형 태그(틈새 시장)가 부족합니다.';
+        msg = '확실한 진성 유입을 보장하는 소형 태그가 부족합니다. 계정 지수가 낮을 때는 소형 태그에서 인기 게시물을 선점하는 것이 가장 중요합니다.';
+        color = 'var(--bfy-warning)';
+        borderCol = '#eab308';
+      } else if (smallRatio > 0.6) {
+        grade = '⚠️ 소형 태그에 너무 편중되어 있습니다.';
+        msg = '경쟁은 적지만 그만큼 검색량도 적습니다. 상위 노출은 쉽겠지만 폭발적인 트래픽(떡상)을 기대하기는 어려운 구조입니다.';
+        color = '#f97316';
+        borderCol = '#f97316';
+      }
+
+      diagBox.style.borderLeft = `4px solid ${borderCol}`;
+      diagBox.innerHTML = `
+        <h4 style="color: ${color}; margin-bottom: 12px; font-size: 16px;">${grade}</h4>
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">${msg}</p>
+        <div style="background: #f1f5f9; padding: 12px; border-radius: 6px;">
+          <p style="font-size: 13px; color: #475569; display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>🔥 대형 (경쟁 치열)</span> <strong>${ratios.large}% (${counts.large}개)</strong>
+          </p>
+          <p style="font-size: 13px; color: #475569; display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>⭐️ 중형 (안정적 유입)</span> <strong>${ratios.medium}% (${counts.medium}개)</strong>
+          </p>
+          <p style="font-size: 13px; color: #475569; display: flex; justify-content: space-between;">
+            <span>🌱 소형 (진성 유입/선점)</span> <strong>${ratios.small}% (${counts.small}개)</strong>
+          </p>
+        </div>
+      `;
+
+      guideBox.innerHTML = `
+        <strong style="color: var(--bfy-primary);">[해시태그 황금 비율 가이드]</strong><br><br>
+        1. <strong>가장 이상적인 2:4:4 법칙:</strong> 대형 20%(약 6개) : 중형 40%(약 12개) : 소형 40%(약 12개)의 조합이 알고리즘에 가장 유리합니다.<br><br>
+        2. <strong>단계별 노출 알고리즘:</strong> 인스타그램은 먼저 경쟁이 적은 '소형 태그'에서 반응도(좋아요/저장)를 측정합니다. 여기서 반응이 좋아야 '중형', '대형' 태그의 인기 게시물로 승격됩니다.<br><br>
+        3. <strong>지역 기반 비즈니스 팁:</strong> 식당/미용실 등 오프라인 매장은 대형 태그(#수원맛집) 1개를 줄이고, 구매 전환율이 높은 소형 태그(#수원인계동데이트코스) 2개를 늘리는 것이 매출에 훨씬 직결됩니다.
+      `;
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

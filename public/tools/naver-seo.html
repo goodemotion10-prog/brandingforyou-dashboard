@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>네이버 블로그 SEO 구조 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">🔍</div>
+      <h1>네이버 블로그 SEO 구조 생성기</h1>
+      <p class="tool-subtitle">상위 노출 로직은 기본, 검색자의 체류시간과 전환율(상담/구매)을 극대화하는 블로그 구조를 기획합니다.</p>
+    </header>
+
+    <!-- STEP 1: 검색 의도 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 검색 의도 및 키워드 전략</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group" style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+            <label class="field-label">메인 키워드 (노출 목표)</label>
+            <input type="text" name="seo_keyword" id="seo_keyword" placeholder="예: 수원 음주운전 변호사">
+          </div>
+          <div style="flex: 1;">
+            <label class="field-label">지역/장소 기반 (선택)</label>
+            <input type="text" id="target_location" placeholder="예: 수원, 광교 (오프라인 매장인 경우)">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">서브/연관 키워드 (본문 자연스럽게 배치)</label>
+          <textarea id="sub_keywords" placeholder="예: 음주운전 처벌 수위, 구속 기준, 면허 취소 구제 등"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">검색자의 진짜 의도 (Search Intent)</label>
+          <div class="chip-group" data-id="search_intent">
+            <span class="chip-btn active" data-value="구매/상담 결정형">📞 구매/상담 결정형 (확신이 필요함)</span>
+            <span class="chip-btn" data-value="정보 탐색형">💡 정보 탐색형 (방법/지식이 궁금함)</span>
+            <span class="chip-btn" data-value="비교/리뷰형">⚖️ 비교/리뷰형 (A와 B중 고민중)</span>
+            <span class="chip-btn" data-value="지역/장소 기반">📍 지역 기반 (근처에 갈 곳을 찾음)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 체류시간 및 프레임워크 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 체류시간 극대화 및 프레임워크</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">글쓰기 프레임워크 (구조)</label>
+          <div class="chip-group" data-id="writing_framework">
+            <span class="chip-btn active" data-value="PAS 구조">💊 PAS 구조 (문제 공감 - 심화 - 해결책)</span>
+            <span class="chip-btn" data-value="PREP 구조">📢 PREP 구조 (결론 - 이유 - 예시 - 결론)</span>
+            <span class="chip-btn" data-value="칼럼/전문가형">👨‍🏫 칼럼/전문가형 (인사이트 중심)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">오프닝 후킹 기법 (초반 이탈 방지)</label>
+          <div class="chip-group" data-id="hook_strategy">
+            <span class="chip-btn active" data-value="독자의 고민/상황 완벽 공감">🥺 독자의 고민/상황 완벽 공감</span>
+            <span class="chip-btn" data-value="파격적인 혜택/결과 선공개">🎁 파격적인 결과/혜택 선공개</span>
+            <span class="chip-btn" data-value="기존 상식 부정하기">🔄 기존 상식 부정하기 (어그로/반전)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 신뢰도 설계 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 브랜드 및 신뢰도(Trust) 설계</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">브랜드명 / 업종</label>
+          <input type="text" name="brand_name" id="brand_name" placeholder="예: 법률사무소 승소">
+        </div>
+        <div class="field-group">
+          <label class="field-label">경쟁사 대비 우리만의 차별화 포인트 (USP)</label>
+          <textarea id="usp_point" placeholder="예: 판사 출신 대표 변호사 직접 상담, 승소율 98%"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">신뢰도(Trust) 부여 장치</label>
+          <div class="chip-group" data-id="trust_element">
+            <span class="chip-btn active" data-value="전문 자격/경력 강조">📜 전문 자격/경력 압도적 강조</span>
+            <span class="chip-btn" data-value="구체적인 고객 성공 사례">📈 구체적인 고객 성공 사례 (수치화)</span>
+            <span class="chip-btn" data-value="대표자의 진정성 있는 철학">❤️ 대표자의 진정성 있는 철학/스토리</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: AEO 최적화 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: AEO 최적화 및 CTA</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">행동유도(CTA) 및 제공 혜택</label>
+          <input type="text" id="cta_text" placeholder="예: 24시간 무료 전화 상담, 방문 시 블로그 보고 왔다고 하면 할인">
+        </div>
+        <div class="field-group">
+          <label class="field-label">상세 SEO / AEO 튜닝 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="aeo_tuning" data-multi="true">
+            <span class="chip-btn active" data-value="제목 맨 앞에 메인 키워드 배치">제목 맨 앞에 메인 키워드 고정</span>
+            <span class="chip-btn" data-value="네이버 CUE/스마트블록 대응 (FAQ 형태 추가)">네이버 CUE/스마트블록 대응 (FAQ 추가)</span>
+            <span class="chip-btn" data-value="체류시간을 높이는 중간 브릿지 카피 삽입">체류시간용 중간 브릿지(시선끌기) 멘트 삽입</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 SEO 블로그 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    // URL 파라미터로 키워드 받아오기 (도구 연동)
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlKeyword = getUrlParam('keyword');
+      if (urlKeyword) {
+        document.getElementById('seo_keyword').value = urlKeyword;
+      }
+    });
+
+    function generatePrompt() {
+      const keyword = document.getElementById('seo_keyword').value;
+      const location = document.getElementById('target_location').value;
+      const subKeys = document.getElementById('sub_keywords').value;
+      const intent = document.getElementById('search_intent').value || '구매/상담 결정형';
+      
+      const framework = document.getElementById('writing_framework').value || 'PAS 구조';
+      const hook = document.getElementById('hook_strategy').value || '독자의 고민 완벽 공감';
+      
+      const brand = document.getElementById('brand_name').value || '해당 업체';
+      const usp = document.getElementById('usp_point').value;
+      const trust = document.getElementById('trust_element').value || '전문 자격/경력 강조';
+      
+      const cta = document.getElementById('cta_text').value || '상담 문의';
+      const tuning = document.getElementById('aeo_tuning').value || '없음';
+
+      if (!keyword) {
+        alert('메인 키워드를 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Naver Blog SEO Specialist, Copywriter & Conversion Hacker
+[Task] Design a Highly-Optimized Naver Blog Post Structure & AEO Guide
+
+[SEO Strategy Context]
+- Main Keyword: "${keyword}"
+- Sub-Keywords / LSI: "${subKeys || 'Extract relevant sub-keywords based on main topic'}"
+- Target Location: "${location || 'N/A'}"
+- User Search Intent: "${intent}"
+
+[Brand & Trust Engineering]
+- Brand/Business Name: "${brand}"
+- Unique Selling Proposition (USP): "${usp || 'Professionalism and Reliability'}"
+- Primary Trust Element: "${trust}"
+
+[Copywriting Mechanics]
+- Writing Framework: "${framework}"
+- Opening Hook Strategy: "${hook}"
+- Call to Action (CTA): "${cta}"
+- Advanced SEO/AEO Tuning Options: "${tuning}"
+
+[Constraints]
+- Suggest 3 highly clickable (High CTR) SEO Titles. If "제목 맨 앞에 메인 키워드" is selected, follow it strictly.
+- Outline the Headings (H2, H3) logically according to the "${framework}".
+- Hook (Intro): Stop the reader from bouncing (clicking back) by applying the "${hook}" strategy immediately.
+- Body: Subtly weave in the [Sub-Keywords] and strongly highlight the [USP] using the "${trust}" element.
+- If "체류시간용 중간 브릿지" is selected, add curiosity-inducing subheadings or transition sentences to keep them scrolling.
+- If "네이버 CUE 대응 (FAQ 추가)" is selected, generate a 3-question FAQ block at the bottom optimized for AI search snippets.
+- End with the precise "${cta}".
+
+[IMPORTANT REQUIREMENT]
+- All strategic outlines, psychological triggers, and copywriting examples MUST be written entirely in KOREAN (한국어).
+
+[Output Format]
+# [High CTR SEO Title Ideas]
+1. ...
+2. ...
+3. ...
+
+---
+# [Master Blog Outline]
+## 1. Intro (The Hook)
+- Strategy: [How to apply the ${hook}]
+- Copy Draft: ...
+
+## 2. Main Body (${framework} Applied)
+- H2: ...
+  - Content details: ...
+- H2: (Trust Element - ${trust})
+  - Content details: ...
+
+## 3. Outro & CTA
+- Copy Draft: ... ${cta} ...
+
+---
+# [AEO / Smart Block Optimization Guide]
+- FAQ Block Idea: ... (If requested in Tuning Options)
+- Keyword Placement Tips: ...`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

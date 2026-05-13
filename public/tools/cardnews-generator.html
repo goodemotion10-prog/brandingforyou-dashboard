@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>카드뉴스 프롬프트 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">📰</div>
+      <h1>카드뉴스 프롬프트 생성기</h1>
+      <p class="tool-subtitle">마케팅 목적에 맞는 5장 흐름과 톤앤매너, 세부 튜닝을 거쳐 완벽한 기획안을 설계합니다.</p>
+    </header>
+
+    <!-- STEP 1: 기획 흐름 선택 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 마케팅 기획 방향 (흐름 선택)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">5장 스토리 흐름 선택</label>
+          <div class="chip-group" data-id="flow_type">
+            <span class="chip-btn active" data-value="정보 전달형">📚 정보 전달형 (문제-해결)</span>
+            <span class="chip-btn" data-value="성공 수기형">🏆 성공/합격 수기형 (비포-애프터)</span>
+            <span class="chip-btn" data-value="시즌 이벤트형">🎯 시즌 이벤트/특강형 (한정 혜택)</span>
+            <span class="chip-btn" data-value="노하우 방출형">💡 노하우 방출형 (꿀팁 리스트)</span>
+            <span class="chip-btn" data-value="서비스 미리보기형">🎬 서비스/강의 미리보기형</span>
+          </div>
+          <p id="flow-desc" class="caption" style="margin-top: 8px; color: var(--bfy-primary);">선택한 유형에 따라 전문적인 5장의 흐름이 자동으로 구성됩니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 톤앤매너 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 느낌 및 톤앤매너 설정</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">브랜드 톤앤매너 (문체)</label>
+          <div class="chip-group" data-id="tone_manner">
+            <span class="chip-btn active" data-value="전문가/신뢰감">👩‍🏫 전문가/신뢰감 (논리적, 단호한 어조)</span>
+            <span class="chip-btn" data-value="친근한 소통형">🤗 친근한 소통형 (공감, 다독이는 어조)</span>
+            <span class="chip-btn" data-value="트렌디/후킹형">🔥 트렌디/후킹형 (강렬함, 호기심 자극)</span>
+            <span class="chip-btn" data-value="감성/스토리형">✨ 감성/스토리형 (따뜻함, 스토리텔링)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 기본 정보 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 브랜드 및 핵심 정보 입력</span>
+      </div>
+      <div class="step-body">
+        <form id="tool-form">
+          <div class="field-group">
+            <label class="field-label">브랜드명 / 서비스명</label>
+            <input type="text" name="brand_name" id="brand_name" placeholder="예: 브랜딩포유">
+          </div>
+          <div class="field-group">
+            <label class="field-label">주요 타깃 고객 (구체적으로)</label>
+            <input type="text" id="target_audience" placeholder="예: 첫 콘텐츠 기획에 어려움을 겪는 1인 기업가">
+          </div>
+          <div class="field-group">
+            <label class="field-label">반드시 전달할 핵심 메시지 (1문장)</label>
+            <input type="text" id="core_message" placeholder="예: AI 도구를 쓰면 하루 걸릴 기획이 10분 만에 끝납니다.">
+          </div>
+          <div class="field-group">
+            <label class="field-label">행동유도(CTA) 및 제공 혜택 (리드마그넷)</label>
+            <input type="text" id="cta_benefit" placeholder="예: 프로필 링크에서 'AI 마케팅 가이드북' 무료 다운로드">
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- STEP 4: 세부 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 이미지 비율 및 세부 튜닝</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">캔버스 비율</label>
+          <div class="chip-group" data-id="image_ratio">
+            <span class="chip-btn active" data-value="1:1 정방형">🔲 1:1 정방형 (피드 기본)</span>
+            <span class="chip-btn" data-value="4:5 세로형">📱 4:5 세로형 (가시성 최적화)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">세부 튜닝 옵션 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="tuning_options" data-multi="true">
+            <span class="chip-btn" data-value="텍스트 최소화 (이미지 위주)">이미지 위주 (텍스트 최소화)</span>
+            <span class="chip-btn" data-value="넘버링 리스트 적용">번호(1,2,3) 넘버링 적용</span>
+            <span class="chip-btn" data-value="다음 장 유도 브릿지 카피 추가">다음 장 유도 브릿지 카피 추가</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">브랜드 포인트 컬러 (디자인 프롬프트용)</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="color" id="brand_color_picker" value="#378ADD" style="width: 50px; padding: 2px; height: 42px;">
+            <input type="text" id="brand_color_hex" value="#378ADD" placeholder="#000000" style="flex: 1;">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 마케팅 카드뉴스 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 전체 복사</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+      
+      <div class="flow-box" style="margin-top: 30px; background: #fff; border: 1px solid var(--bfy-border);">
+        <h4 style="margin-bottom: 16px; color: var(--bfy-navy);">💡 Tip: 카드뉴스 제작 팁</h4>
+        <p class="caption" style="text-align: left;">
+          1. 생성된 기획안을 바탕으로 ChatGPT에게 **"위의 [Image Prompt] 내용대로 각 장의 이미지를 순서대로 그려줘"**라고 요청하세요.<br>
+          2. 텍스트는 캔바(Canva)나 미리캔버스에 이미지를 불러와서 직접 입력하는 것이 훨씬 깔끔합니다.<br>
+          3. 포인트 컬러를 활용해 브랜드 일관성을 유지하세요.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    // 컬러 피커 연동
+    const picker = document.getElementById('brand_color_picker');
+    const hexInput = document.getElementById('brand_color_hex');
+    picker.addEventListener('input', () => hexInput.value = picker.value.toUpperCase());
+    hexInput.addEventListener('input', () => {
+      if(/^#[0-9A-F]{6}$/i.test(hexInput.value)) picker.value = hexInput.value;
+    });
+
+    // 흐름 설명 업데이트 로직
+    document.addEventListener('DOMContentLoaded', () => {
+      // Setup accordions and chip selections (handled in common.js)
+      
+      const flowChips = document.querySelectorAll('.chip-group[data-id="flow_type"] .chip-btn');
+      flowChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          setTimeout(() => { // wait for common.js to set hidden input value
+            const flow = document.getElementById('flow_type').value;
+            const descs = {
+              "정보 전달형": "1장: 후킹 질문 | 2장: 원인 분석 | 3장: 해결책 | 4장: 핵심 요약 | 5장: CTA",
+              "성공 수기형": "1장: 최악의 비포 | 2장: 변화 계기 | 3장: 극복 과정 | 4장: 놀라운 애프터 | 5장: CTA",
+              "시즌 이벤트형": "1장: 타깃의 불안감/이슈 | 2장: 상품/특강 소개 | 3장: 한정 혜택 | 4장: 수강생 반응 | 5장: CTA",
+              "노하우 방출형": "1장: 호기심 유발 | 2장: 노하우 1 | 3장: 노하우 2 | 4장: 노하우 3 | 5장: CTA",
+              "서비스 미리보기형": "1장: 타깃 공감 | 2장: 커리큘럼 소개 | 3장: 타사와의 차별점 | 4장: 생생한 후기 | 5장: CTA"
+            };
+            document.getElementById('flow-desc').textContent = descs[flow] || "";
+          }, 50);
+        });
+      });
+    });
+
+    function generatePrompt() {
+      const flowType = document.getElementById('flow_type').value || "정보 전달형";
+      const tone = document.getElementById('tone_manner').value || "전문가/신뢰감";
+      const brand = document.getElementById('brand_name').value || '브랜딩포유';
+      const target = document.getElementById('target_audience').value;
+      const coreMsg = document.getElementById('core_message').value;
+      const cta = document.getElementById('cta_benefit').value;
+      const ratio = document.getElementById('image_ratio').value || "1:1 정방형";
+      const tuning = document.getElementById('tuning_options').value || "없음";
+      const color = document.getElementById('brand_color_hex').value;
+
+      if (!target || !coreMsg) {
+        alert('주요 타깃 고객과 핵심 메시지를 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Expert Content Marketer & Card News Director
+[Task] Plan a Highly-Optimized 5-slide Instagram Carousel (Card News)
+
+[Marketing Context]
+- Flow Strategy: "${flowType}"
+- Tone & Manner: "${tone}"
+- Brand/Service: "${brand}"
+- Target Audience: "${target}"
+- Core Message: "${coreMsg}"
+- CTA & Benefit: "${cta}"
+
+[Design Context]
+- Canvas Ratio: "${ratio}"
+- Brand Primary Color: "${color}"
+- Detail Tuning Options: "${tuning}"
+
+[Constraints]
+- The carousel MUST have exactly 5 slides.
+- Follow the highly specific psychological flow of "${flowType}".
+- Apply the "${tone}" style throughout all copy.
+- Incorporate the [Detail Tuning Options].
+- Provide [Text Content] for each slide (Headline & max 2 short lines of body text).
+- Provide an [Image Prompt] for each slide optimized for ChatGPT DALL-E 3 (Image Generation 2.0). 
+  - The [Image Prompt] MUST be in English.
+  - It should describe the main visual or background, incorporating the [Brand Primary Color], and clearly state to leave blank space for text based on the "${ratio}" format.
+
+[IMPORTANT REQUIREMENT]
+- All strategic outlines, explanations, and [Text Content] MUST be written entirely in KOREAN (한국어).
+- ONLY the [Image Prompt] sections MUST be written in ENGLISH.
+
+[Output Format]
+# Card News Master Plan: ${brand}
+## Marketing Strategy Overview
+- ...
+
+---
+## Slide 1: [Purpose in the flow]
+**[Text Content]**
+- Headline: ...
+- Body: ...
+**[Bridge Copy]** (If requested)
+- ...
+**[Image Prompt for DALL-E 3]**
+(English prompt detailing the aesthetic, subject, color, and negative space)
+
+## Slide 2: ... (Continue to Slide 5)`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>

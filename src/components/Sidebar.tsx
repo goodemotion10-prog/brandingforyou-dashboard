@@ -12,9 +12,10 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "대시보드", href: "/" },
-  { icon: Search, label: "리서치 관리", href: "/research" },
-  { icon: History, label: "리서치 결과", href: "/history" },
+  { icon: LayoutDashboard, label: "AI 도구 허브", href: "/" },
+  { icon: Sparkles, label: "리서치 대시보드", href: "/research-dashboard" },
+  { icon: Search, label: "리서치 키워드 관리", href: "/research" },
+  { icon: History, label: "리서치 결과 모아보기", href: "/history" },
   { icon: Settings, label: "설정", href: "/settings" },
   { icon: Lightbulb, label: "사용법 가이드", href: "/tips" },
 ];

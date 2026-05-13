@@ -1,255 +1,207 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { 
-  Users, 
-  Search, 
-  Mail, 
-  Calendar, 
-  TrendingUp, 
-  CheckCircle,
-  Clock,
-  ArrowRight,
-  Target,
-  Sparkles,
-  X,
-  ChevronRight
-} from "lucide-react";
-import { supabase } from "@/lib/supabase";
-import { marked } from 'marked';
+import Link from "next/link";
+import { Sparkles, ArrowRight } from "lucide-react";
 
-interface StatCardProps {
+interface ToolCardProps {
+  href: string;
+  icon: string;
+  iconBg: string;
+  iconColor: string;
   title: string;
-  value: string | number;
-  icon: any;
-  trend?: string;
-  color: string;
+  description: string;
+  tag: string;
 }
 
-function StatCard({ title, value, icon: Icon, trend, color }: StatCardProps) {
+function ToolCard({ href, icon, iconBg, iconColor, title, description, tag }: ToolCardProps) {
   return (
-    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <div className={`p-2.5 rounded-xl ${color} bg-opacity-10 text-brand-600`}>
-          <Icon className="w-6 h-6" />
+    <Link 
+      href={href} 
+      className="bg-white border border-slate-200 rounded-2xl p-6 text-center hover:-translate-y-1 hover:border-brand-500 hover:shadow-xl hover:shadow-brand-500/10 transition-all flex flex-col items-center gap-4 min-h-[280px]"
+    >
+      <div className="flex flex-col items-center gap-4 w-full">
+        <div 
+          className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+          style={{ backgroundColor: iconBg, color: iconColor }}
+        >
+          {icon}
         </div>
-        {trend && (
-          <span className="text-[12px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
-            {trend}
-          </span>
-        )}
+        <strong className="text-[18px] font-bold text-slate-900">{title}</strong>
       </div>
-      <h3 className="text-sm font-medium text-gray-500 mb-1">{title}</h3>
-      <p className="text-2xl font-black text-gray-900 tracking-tight">{value}</p>
+      <p className="text-[14px] text-slate-500 leading-relaxed">{description}</p>
+      <div className="mt-auto flex justify-between items-center w-full text-[13px] font-medium text-brand-600">
+        <span className="bg-brand-50 px-2.5 py-1 rounded-md">{tag}</span>
+        <span>시작하기 →</span>
+      </div>
+    </Link>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="text-[14px] font-bold text-brand-600 mb-4 uppercase tracking-wider flex items-center gap-2">
+      {children}
+      <div className="h-px bg-slate-200 flex-1 ml-2"></div>
     </div>
   );
 }
 
-export default function Dashboard() {
-  const [stats, setStats] = useState({
-    activeTasks: 0,
-    totalResults: 0,
-    lastRun: "대기 중"
-  });
-  const [recentResults, setRecentResults] = useState<any[]>([]);
-  const [selectedResult, setSelectedResult] = useState<any | null>(null);
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-    const { count: tasksCount } = await supabase
-      .from("research_tasks")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "active");
-
-    const { count: resultsCount } = await supabase
-      .from("research_results")
-      .select("*", { count: "exact", head: true });
-
-    const { data: recent } = await supabase
-      .from("research_results")
-      .select("*, task:research_tasks(topic)")
-      .order("created_at", { ascending: false })
-      .limit(5);
-
-    setStats({
-      activeTasks: tasksCount || 0,
-      totalResults: resultsCount || 0,
-      lastRun: recent?.[0] ? new Date(recent[0].created_at).toLocaleDateString() : "기록 없음"
-    });
-    
-    if (recent) setRecentResults(recent);
-  };
-
+export default function HubPage() {
   return (
-    <div className="max-w-6xl animate-in fade-in duration-700">
-      <header className="mb-10">
-        <h1 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">Dashboard Overview</h1>
-        <p className="text-gray-500 font-medium">실시간 리서치 현황과 최근 분석 리포트를 확인하세요.</p>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <StatCard 
-          title="활성 리서치 키워드" 
-          value={`${stats.activeTasks}개`} 
-          icon={Search} 
-          trend="+2 New"
-          color="bg-brand-500"
-        />
-        <StatCard 
-          title="총 리포트 생성" 
-          value={`${stats.totalResults}건`} 
-          icon={Mail} 
-          trend="누적 데이터"
-          color="bg-brand-500"
-        />
-        <StatCard 
-          title="최근 업데이트" 
-          value={stats.lastRun} 
-          icon={Clock} 
-          color="bg-brand-500"
-        />
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* 최근 리포트 타임라인 */}
-        <section>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-brand-600" />
-              최근 생성된 리서치
-            </h2>
-            <a href="/history" className="text-sm font-bold text-brand-600 hover:underline flex items-center gap-1">
-              전체 보기 <ArrowRight className="w-4 h-4" />
-            </a>
+    <div className="max-w-[1100px] mx-auto animate-in fade-in duration-700 pb-16">
+      
+      {/* Header */}
+      <header className="mb-12 flex flex-col items-center text-center gap-4">
+        <div className="flex flex-col items-center gap-4">
+          <div className="bg-brand-500 text-white font-black w-12 h-12 flex items-center justify-center rounded-xl text-lg shadow-md">
+            BFY
           </div>
-          <div className="space-y-4">
-            {recentResults.length === 0 ? (
-              <p className="text-gray-400 py-10 text-center bg-gray-50 rounded-2xl border border-dashed border-gray-200">데이터가 없습니다.</p>
-            ) : (
-              recentResults.map((result, idx) => (
-                <div 
-                  key={result.id} 
-                  onClick={() => setSelectedResult(result)}
-                  className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:border-brand-300 transition-all group cursor-pointer flex items-center justify-between"
-                >
-                  <div className="flex gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-2 h-2 bg-brand-500 rounded-full mb-2 group-hover:scale-150 transition-transform"></div>
-                      <div className="w-px h-full bg-gray-100"></div>
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-gray-900 mb-1 group-hover:text-brand-600 transition-colors">
-                        {result.title}
-                      </h4>
-                      <p className="text-sm text-gray-500 mb-2 line-clamp-1">{result.summary}</p>
-                      <span className="text-[12px] font-bold text-gray-400 uppercase">
-                        {new Date(result.created_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-gray-300 group-hover:text-brand-500 transition-colors" />
-                </div>
-              ))
-            )}
-          </div>
-        </section>
-
-        {/* 시스템 상태 및 통계 */}
-        <section>
-          <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-brand-600" />
-            리서치 인사이트
-          </h2>
-          <div className="bg-brand-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl shadow-brand-200">
-            <Sparkles className="absolute right-[-20px] top-[-20px] w-40 h-40 text-white opacity-10 rotate-12" />
-            <div className="relative z-10">
-              <h3 className="text-2xl font-black mb-4 leading-tight">지능형 자동 리서치로<br/>비즈니스 기회를 포착하세요.</h3>
-              <p className="text-brand-100 text-sm leading-relaxed mb-8 max-w-sm">
-                현재 등록된 키워드들이 매일 아침 AI에 의해 분석되어 이메일로 전송되고 있습니다. 최신 트렌드를 놓치지 마세요.
-              </p>
-              <div className="flex gap-4">
-                <a href="/research" className="px-6 py-3 bg-white text-brand-900 text-sm font-bold rounded-xl hover:bg-brand-50 transition-colors">
-                  키워드 관리
-                </a>
-                <div className="flex items-center gap-2 text-brand-200 text-sm font-medium">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  System Healthy
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-6 grid grid-cols-2 gap-4">
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-              <p className="text-xs font-bold text-gray-400 uppercase mb-2">오늘의 데이터</p>
-              <p className="text-lg font-black text-gray-900">100% 수집됨</p>
-            </div>
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-              <p className="text-xs font-bold text-gray-400 uppercase mb-2">검색 정확도</p>
-              <p className="text-lg font-black text-gray-900">Deep Focus</p>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      {/* 상세 보기 모달 (대시보드 공용) */}
-      {selectedResult && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-gray-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden flex flex-col">
-            <div className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-black text-gray-900 leading-tight">리포트 전문 보기</h2>
-                  <p className="text-[12px] text-gray-400 font-medium">{new Date(selectedResult.created_at).toLocaleString()}</p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setSelectedResult(null)}
-                className="p-2 bg-gray-50 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-all"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            
-            <div className="flex-grow overflow-y-auto p-8 md:p-12 bg-white">
-              <article className="max-w-3xl mx-auto">
-                <div className="mb-10 text-center">
-                  <h1 className="text-3xl font-black text-gray-900 mb-6 leading-tight">
-                    {selectedResult.title}
-                  </h1>
-                  <div className="h-1.5 w-16 bg-brand-500 mx-auto rounded-full"></div>
-                </div>
-                
-                <div 
-                  className="prose prose-brand max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-p:leading-relaxed prose-li:text-gray-600"
-                  style={{
-                    lineHeight: '1.8',
-                    fontSize: '17px',
-                    color: '#374151'
-                  }}
-                  dangerouslySetInnerHTML={{ __html: marked.parse(selectedResult.content) }}
-                >
-                </div>
-              </article>
-            </div>
-
-            <div className="px-8 py-6 bg-gray-50 border-t border-gray-100 flex justify-end">
-              <button 
-                onClick={() => setSelectedResult(null)}
-                className="px-8 py-3 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-md"
-              >
-                닫기
-              </button>
-            </div>
+          <div>
+            <h1 className="text-2xl md:text-3xl font-black text-slate-900 mb-2">브랜딩포유 AI 도구 허브</h1>
+            <p className="text-slate-500 font-medium">SNS 마케팅 실무를 위한 AI 프롬프트 생성기 모음</p>
           </div>
         </div>
-      )}
+        <span className="bg-brand-500 text-white px-3 py-1 rounded-full text-xs font-bold mt-2">Beta v1.0</span>
+      </header>
+
+      <p className="text-slate-600 text-center max-w-2xl mx-auto mb-12 leading-relaxed">
+        클라이언트 정보를 입력하면 최적화된 마케팅 프롬프트가 자동으로 구성됩니다.<br/>
+        생성된 프롬프트를 Claude나 ChatGPT에 붙여넣어 고품질 결과물을 만드세요.
+      </p>
+
+      {/* 카테고리: 콘텐츠 제작 */}
+      <section className="mb-14">
+        <SectionLabel>콘텐츠 제작</SectionLabel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <ToolCard 
+            href="/tools/caption-generator.html" icon="📸" iconBg="#EEF2FF" iconColor="#4F46E5"
+            title="인스타 캡션 생성기" tag="Instagram"
+            description="업종·주제·톤 입력 → 후킹 문구와 해시태그 30개 자동 완성" 
+          />
+          <ToolCard 
+            href="/tools/cardnews-generator.html" icon="📰" iconBg="#FFF7ED" iconColor="#EA580C"
+            title="카드뉴스 프롬프트" tag="Design"
+            description="5장 구성의 카드뉴스 흐름과 이미지 생성용 프롬프트 설계" 
+          />
+          <ToolCard 
+            href="/tools/thread-blog-generator.html" icon="✍️" iconBg="#F0FDF4" iconColor="#16A34A"
+            title="스레드·블로그 생성기" tag="Multi-Channel"
+            description="핵심 키워드 하나로 스레드용 요약과 블로그용 긴 글 동시 생성" 
+          />
+          <ToolCard 
+            href="/tools/youtube-script.html" icon="🎬" iconBg="#FEF2F2" iconColor="#DC2626"
+            title="유튜브 스크립트 구조" tag="Video"
+            description="주제와 길이에 맞춘 후킹-본론-CTA 3단계 대본 구조 설계" 
+          />
+        </div>
+      </section>
+
+      {/* 카테고리: 전략 설계 */}
+      <section className="mb-14">
+        <SectionLabel>전략 설계</SectionLabel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <ToolCard 
+            href="/tools/funnel-designer.html" icon="🎯" iconBg="#FDF4FF" iconColor="#C026D3"
+            title="마케팅 퍼널 설계" tag="Strategy"
+            description="업종과 타깃에 맞춘 AIDA 기반 단계별 마케팅 전략 수립" 
+          />
+          <ToolCard 
+            href="/tools/content-calendar.html" icon="📅" iconBg="#F0F9FF" iconColor="#0284C7"
+            title="콘텐츠 캘린더 생성" tag="Planning"
+            description="업종별 시즌 이슈를 반영한 한 달 분량 콘텐츠 주제 제안" 
+          />
+        </div>
+      </section>
+
+      {/* 카테고리: 클라이언트 업무 */}
+      <section className="mb-14">
+        <SectionLabel>클라이언트 업무</SectionLabel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* 리서치 대시보드 카드 추가 (가장 중요) */}
+          <Link 
+            href="/research-dashboard" 
+            className="bg-brand-900 border border-brand-800 rounded-2xl p-6 text-center hover:-translate-y-1 hover:shadow-xl hover:shadow-brand-500/20 transition-all flex flex-col items-center gap-4 min-h-[280px] relative overflow-hidden group"
+          >
+            <Sparkles className="absolute right-[-10px] top-[-10px] w-24 h-24 text-white opacity-5 group-hover:opacity-10 group-hover:rotate-12 transition-all" />
+            <div className="flex flex-col items-center gap-4 w-full relative z-10">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-white/10 text-white">
+                <Sparkles className="w-8 h-8" />
+              </div>
+              <strong className="text-[18px] font-bold text-white">매일 자동 리서치</strong>
+            </div>
+            <p className="text-[14px] text-brand-100 leading-relaxed relative z-10">
+              키워드 기반의 트렌드 분석 및 AI 자동 리서치 리포트 열람
+            </p>
+            <div className="mt-auto flex justify-between items-center w-full text-[13px] font-medium text-white relative z-10">
+              <span className="bg-white/20 px-2.5 py-1 rounded-md">Dashboard</span>
+              <span className="flex items-center gap-1">열람하기 <ArrowRight className="w-4 h-4"/></span>
+            </div>
+          </Link>
+
+          <ToolCard 
+            href="/tools/naver-seo.html" icon="🔍" iconBg="#F0FDF4" iconColor="#16A34A"
+            title="네이버 블로그 SEO 구조" tag="Naver Blog"
+            description="상위 노출을 위한 검색 의도 분석 및 포스팅 목차 설계" 
+          />
+          <ToolCard 
+            href="/tools/proposal-generator.html" icon="📋" iconBg="#F8FAFC" iconColor="#475569"
+            title="마케팅 제안서 구조" tag="Business"
+            description="클라이언트 맞춤형 제안 포인트와 5단계 제안서 목차 생성" 
+          />
+        </div>
+      </section>
+
+      {/* 카테고리: 보조 도구 */}
+      <section className="mb-14">
+        <SectionLabel>보조 도구</SectionLabel>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <ToolCard 
+            href="/tools/hashtag-analyzer.html" icon="#️⃣" iconBg="#FFFBEB" iconColor="#D97706"
+            title="해시태그 효과 분석" tag="Instagram"
+            description="사용 중인 해시태그의 규모별 비율(대/중/소) 분석 및 최적화" 
+          />
+          <ToolCard 
+            href="/tools/lecture-copy.html" icon="🎓" iconBg="#F5F3FF" iconColor="#7C3AED"
+            title="강의 랜딩 카피 생성" tag="Copywriting"
+            description="강의의 혜택과 차별점을 강조하는 상세페이지 카피 라이팅" 
+          />
+          <ToolCard 
+            href="/tools/bni-message.html" icon="🤝" iconBg="#FEF2F2" iconColor="#DC2626"
+            title="BNI 추천 메시지" tag="Networking"
+            description="비즈니스 협업을 위한 멤버 추천 및 소개 멘트 자동 생성" 
+          />
+          <ToolCard 
+            href="/tools/naver-keyword.html" icon="📊" iconBg="#ECFDF5" iconColor="#059669"
+            title="네이버 키워드 분석" tag="SEO Data"
+            description="키워드별 검색량과 블로그 발행량 기반 경쟁도 분석 (API)" 
+          />
+        </div>
+      </section>
+
+      {/* 하단 플로우 박스 */}
+      <div className="mt-16 bg-brand-50 rounded-3xl p-10 text-center">
+        <h3 className="text-brand-600 font-bold mb-8 uppercase tracking-widest text-sm">모든 도구 공통 사용 흐름</h3>
+        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
+          {[
+            { num: "1", text: "도구 선택" },
+            { num: "2", text: "브랜드/상황 입력" },
+            { num: "3", text: "프롬프트 생성" },
+            { num: "4", text: "복사 후 AI 붙여넣기" },
+            { num: "5", text: "결과물 실무 적용" }
+          ].map((step, idx) => (
+            <div key={idx} className="flex items-center gap-4 md:flex-col md:gap-3">
+              <div className="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm shadow-md">
+                {step.num}
+              </div>
+              <p className="text-slate-800 font-medium text-sm md:w-24 leading-snug">{step.text}</p>
+              {idx < 4 && (
+                <div className="hidden md:block text-brand-300 mt-[-30px] ml-4 text-2xl">›</div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

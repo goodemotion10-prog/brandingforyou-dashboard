@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강의 랜딩 카피 생성기 — 브랜딩포유 AI 도구</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <nav class="top-nav">
+    <a href="/" class="back-link">← 도구 목록으로</a>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <button class="btn-reset" onclick="resetBrandProfile()">🔄 데이터 초기화</button>
+      <span class="nav-logo" style="font-weight: 700; color: var(--bfy-primary);">BFY AI TOOLS</span>
+    </div>
+  </nav>
+
+  <main class="tool-container">
+    <header class="tool-header">
+      <div class="tool-icon-lg">🎓</div>
+      <h1>강의 랜딩 카피 생성기</h1>
+      <p class="tool-subtitle">수강생의 망설임을 제거하고 결제 버튼을 누르게 만드는 완벽한 랜딩페이지 구조와 카피를 기획합니다.</p>
+    </header>
+
+    <!-- STEP 1: 강사 전문성 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 1: 카테고리 및 강사 전문성 (Authority)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">강의 카테고리</label>
+          <div class="chip-group" data-id="lecture_category">
+            <span class="chip-btn active" data-value="재테크/창업">💸 재테크/창업 (수익화 중심)</span>
+            <span class="chip-btn" data-value="마케팅/비즈니스">📈 마케팅/비즈니스 (성과 중심)</span>
+            <span class="chip-btn" data-value="직무/실무스킬">💻 직무/실무스킬 (효율/연봉 중심)</span>
+            <span class="chip-btn" data-value="자기계발/마인드셋">🔥 자기계발/마인드셋 (성장 중심)</span>
+          </div>
+        </div>
+        <div class="field-group" style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+            <label class="field-label">강의명 (가제)</label>
+            <input type="text" id="lecture_name" placeholder="예: 무자본 지식창업 마스터 클래스">
+          </div>
+          <div style="flex: 1;">
+            <label class="field-label">강사명</label>
+            <input type="text" id="instructor_name" placeholder="예: 브랜딩포유 장이지">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">강사의 압도적 성과 (수치화된 증거)</label>
+          <textarea id="instructor_proof" placeholder="예: 누적 수강생 1만 명, 수강생 총 수익 창출액 50억 달성, 베스트셀러 작가 등 객관적 지표를 적어주세요."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 2: 수강 대상 및 Before/After -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 2: 수강 대상 및 비포/애프터 (Before & After)</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">초정밀 수강 대상</label>
+          <input type="text" id="target_student" placeholder="예: 지식창업을 하고 싶지만 내 콘텐츠가 없어 시작을 못하는 3040">
+        </div>
+        <div class="field-group">
+          <label class="field-label">수강 전 겪고 있는 최악의 문제점 (Before)</label>
+          <textarea id="before_state" placeholder="예: 이것저것 유튜브만 보며 시간 낭비함, 나만의 무기가 없다고 자책함"></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">수강 후 완벽히 해결된 상태 (After)</label>
+          <textarea id="after_state" placeholder="예: 단 1주 만에 나만의 지식 상품을 만들고 첫 수익(100만 원)을 달성함"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 3: 커리큘럼 및 가치 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 3: 커리큘럼 프레임워크 및 핵심 가치</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group">
+          <label class="field-label">커리큘럼 설계 프레임워크</label>
+          <div class="chip-group" data-id="curriculum_framework">
+            <span class="chip-btn active" data-value="3단계 로드맵 (초보-중수-고수)">🗺️ 3단계 로드맵 (기초부터 완성까지)</span>
+            <span class="chip-btn" data-value="문제 해결 중심 (증상별 처방)">💊 문제 해결 중심 (빠른 효과 위주)</span>
+            <span class="chip-btn" data-value="시크릿 노하우 공개형">🗝️ 시크릿 노하우 (업계 비밀 폭로형)</span>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">이 강의만의 가장 핵심이 되는 노하우 (USP)</label>
+          <input type="text" id="core_usp" placeholder="예: 블로그 이웃 0명이어도 바로 팔리는 무의식 카피라이팅 공식">
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4: 판매 구조 및 튜닝 -->
+    <section class="step-section">
+      <div class="step-header">
+        <span>STEP 4: 판매 조건 및 카피 튜닝</span>
+      </div>
+      <div class="step-body">
+        <div class="field-group" style="display: flex; gap: 20px;">
+          <div style="flex: 1;">
+            <label class="field-label">강의 형태</label>
+            <input type="text" id="lecture_format" placeholder="예: VOD + 주 1회 라이브 코칭">
+          </div>
+          <div style="flex: 1;">
+            <label class="field-label">수강료 / 할인 정보</label>
+            <input type="text" id="lecture_price" placeholder="예: 얼리버드 50% 할인 (29만원)">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">행동유도(CTA)</label>
+          <input type="text" id="cta_text" placeholder="예: 얼리버드 특가로 즉시 수강하기">
+        </div>
+        <div class="field-group">
+          <label class="field-label">랜딩 카피 상세 튜닝 옵션 (중복 선택 가능)</label>
+          <div class="chip-group" data-id="copy_tuning" data-multi="true">
+            <span class="chip-btn active" data-value="지금 수강하지 않으면 손해라는 긴급성/희소성 강조">긴급성/희소성 강조 (지금 안사면 손해)</span>
+            <span class="chip-btn" data-value="경쟁 강의와 비교하여 유일한 대안임을 어필">경쟁 강의 대비 압도적 우위/유일함 어필</span>
+            <span class="chip-btn" data-value="수강생의 망설임을 제거하는 리스크 제로(환불/보장) 멘트 삽입">리스크 제로(100% 환불 보장 등) 멘트 삽입</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="btn-generate" onclick="generatePrompt()">
+      ✨ 초고도화 프롬프트 생성하기
+    </button>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" class="result-container" style="display:none;">
+      <div class="result-header">
+        <h3>생성된 랜딩 카피 프롬프트</h3>
+        <div class="result-actions">
+          <button class="btn-copy" onclick="copyResult()">📋 복사하기</button>
+          <button class="btn-chatgpt" onclick="openChatGPTWithResult()">🚀 ChatGPT</button>
+          <button class="btn-claude" onclick="openClaudeWithResult()">✨ Claude</button>
+        </div>
+      </div>
+      <div class="result-guide">💡 <strong>다음 단계:</strong> 아래 프롬프트를 복사하여 AI 채팅창에 그대로 붙여넣으세요.</div>
+      <div id="result-box" class="result-box"></div>
+    </div>
+  </main>
+
+  <script src="../assets/common.js"></script>
+  <script>
+    function generatePrompt() {
+      const category = document.getElementById('lecture_category').value || '자기계발';
+      const lecture = document.getElementById('lecture_name').value;
+      const instructor = document.getElementById('instructor_name').value;
+      const proof = document.getElementById('instructor_proof').value;
+      
+      const target = document.getElementById('target_student').value;
+      const beforeState = document.getElementById('before_state').value;
+      const afterState = document.getElementById('after_state').value;
+      
+      const framework = document.getElementById('curriculum_framework').value || '3단계 로드맵';
+      const usp = document.getElementById('core_usp').value;
+      
+      const format = document.getElementById('lecture_format').value || '온라인 VOD';
+      const price = document.getElementById('lecture_price').value || '정가';
+      const cta = document.getElementById('cta_text').value || '수강 신청하기';
+      const tuning = document.getElementById('copy_tuning').value || '없음';
+
+      if (!lecture || !target || !beforeState) {
+        alert('강의명, 수강 대상, 그리고 현재 문제점(Before)을 필수로 입력해주세요.');
+        return;
+      }
+
+      const prompt = `[Role] Master Copywriter & Conversion Rate Optimization (CRO) Expert
+[Task] Write a High-Converting Sales Landing Page Copy for an Online Course
+
+[Authority & Product Context]
+- Category: "${category}"
+- Course Title: "${lecture}"
+- Instructor: "${instructor}"
+- Instructor's Proof of Authority: "${proof || 'Expert in the field'}"
+- Course Format & Price: "${format} / ${price}"
+
+[Audience Psychology (Before & After)]
+- Target Audience: "${target}"
+- Before State (Pain Point & Frustration): "${beforeState}"
+- After State (Dream Outcome & Transformation): "${afterState}"
+
+[Curriculum & Value Proposition]
+- Curriculum Framework: "${framework}"
+- Unique Selling Proposition (USP): "${usp || 'Proven Methodology'}"
+
+[Sales Mechanics & Tuning]
+- Call to Action (CTA): "${cta}"
+- Advanced Copy Tuning Options: "${tuning}"
+
+[Constraints]
+- Follow a highly persuasive direct-response copywriting structure.
+- 1. Hook/Headline: Suggest 3 irresistible main headlines focusing on the [After State] and [USP].
+- 2. Empathy (Before): Agitate the [Before State] sharply so the reader feels "This is exactly about me."
+- 3. Authority: Prove why [Instructor] is the ONLY person who can solve this using [Proof of Authority].
+- 4. The Solution: Introduce the [Course Title] and how the [Curriculum Framework] guarantees results.
+- 5. Offer & Guarantee: Frame the [Price] as a massive bargain. Apply the [Tuning Options] (e.g., Urgency, Risk Reversal).
+- 6. CTA: End with a strong push for "${cta}".
+- Tone: Highly confident, deeply empathetic, and compelling.
+
+[IMPORTANT REQUIREMENT]
+- The final output MUST be entirely written in KOREAN (한국어).
+
+[Output Format]
+# 🎯 [랜딩 카피] ${lecture} 상세페이지 기획안
+## 1. 터지는 헤드라인 (Headline Options)
+1. ...
+2. ...
+3. ...
+
+---
+## 2. 상세페이지 카피 구조 (Landing Page Structure)
+### [도입부] 공감과 문제 자극 (Agitation)
+- 카피 초안: ...
+
+### [강사 소개] 권위와 신뢰 구축 (Authority)
+- 카피 초안: ...
+
+### [해결책 & 커리큘럼] 유일한 대안 제시 (The Solution)
+- 카피 초안: ...
+
+### [클로징 & 혜택] 거절할 수 없는 제안 (The Offer & CTA)
+- 카피 초안: ... ${cta} ...`;
+
+      showResult(prompt);
+    }
+
+    function copyResult() {
+      const text = document.getElementById('result-box').textContent;
+      copyToClipboard(text, document.querySelector('.btn-copy'));
+    }
+
+    function openChatGPTWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInChatGPT(text);
+    }
+  
+    function openClaudeWithResult() {
+      const text = document.getElementById('result-box').textContent;
+      openInClaude(text);
+    }
+  </script>
+</body>
+</html>
