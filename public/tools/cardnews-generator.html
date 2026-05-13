@@ -25,19 +25,40 @@
     <!-- STEP 1: 기획 흐름 선택 -->
     <section class="step-section">
       <div class="step-header">
-        <span>STEP 1: 마케팅 기획 방향 (흐름 선택)</span>
+        <span>STEP 1: 마케팅 기획 방향 및 장수 설정</span>
       </div>
       <div class="step-body">
         <div class="field-group">
-          <label class="field-label">5장 스토리 흐름 선택</label>
+          <label class="field-label">마케팅 스토리 흐름 선택</label>
           <div class="chip-group" data-id="flow_type">
-            <span class="chip-btn active" data-value="정보 전달형">📚 정보 전달형 (문제-해결)</span>
-            <span class="chip-btn" data-value="성공 수기형">🏆 성공/합격 수기형 (비포-애프터)</span>
-            <span class="chip-btn" data-value="시즌 이벤트형">🎯 시즌 이벤트/특강형 (한정 혜택)</span>
-            <span class="chip-btn" data-value="노하우 방출형">💡 노하우 방출형 (꿀팁 리스트)</span>
-            <span class="chip-btn" data-value="서비스 미리보기형">🎬 서비스/강의 미리보기형</span>
+            <span class="chip-btn active" data-value="제품/서비스 홍보형">🎯 제품/서비스 홍보형 (장점 및 혜택 강조)</span>
+            <span class="chip-btn" data-value="고객 페인포인트 해결형">💡 고객 페인포인트 해결형 (문제 제시 및 솔루션)</span>
+            <span class="chip-btn" data-value="전문성 노하우 공유형">📚 전문성 노하우 공유형 (실무 꿀팁 및 정보)</span>
+            <span class="chip-btn" data-value="브랜드 스토리/철학형">✨ 브랜드 스토리/철학형 (가치관 및 신뢰 구축)</span>
+            <span class="chip-btn" data-value="리뷰/성공 사례 공유형">🏆 리뷰/성공 사례 공유형 (고객 후기 및 성과)</span>
           </div>
-          <p id="flow-desc" class="caption" style="margin-top: 8px; color: var(--bfy-primary);">선택한 유형에 따라 전문적인 5장의 흐름이 자동으로 구성됩니다.</p>
+          <p id="flow-desc" class="caption" style="margin-top: 8px; color: var(--bfy-primary);">선택한 유형에 따라 전문적인 마케팅 흐름이 자동으로 구성됩니다.</p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">카드뉴스 장수 선택</label>
+          <select id="slide_count" onchange="updateSlideInputs()" style="max-width: 150px;">
+            <option value="4">4장</option>
+            <option value="5" selected>5장</option>
+            <option value="6">6장</option>
+            <option value="7">7장</option>
+            <option value="8">8장</option>
+            <option value="9">9장</option>
+            <option value="10">10장</option>
+          </select>
+        </div>
+
+        <div id="slide-inputs-container" class="field-group">
+          <label class="field-label">각 장별 핵심 내용/키워드 (선택 사항)</label>
+          <div id="slide-inputs-list" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Dynamic inputs will be inserted here -->
+          </div>
+          <p class="caption" style="margin-top: 8px;">각 장에 반드시 들어가야 할 키워드나 문구를 입력하면 더 정교한 프롬프트가 생성됩니다.</p>
         </div>
       </div>
     </section>
@@ -156,21 +177,52 @@
       if(/^#[0-9A-F]{6}$/i.test(hexInput.value)) picker.value = hexInput.value;
     });
 
+    // 장수 선택에 따른 입력 필드 동적 생성
+    function updateSlideInputs() {
+      const count = parseInt(document.getElementById('slide_count').value);
+      const list = document.getElementById('slide-inputs-list');
+      const currentValues = Array.from(list.querySelectorAll('input')).map(input => input.value);
+      
+      list.innerHTML = '';
+      for (let i = 1; i <= count; i++) {
+        const div = document.createElement('div');
+        div.style.display = 'flex';
+        div.style.alignItems = 'center';
+        div.style.gap = '10px';
+        
+        const label = document.createElement('span');
+        label.textContent = `${i}장:`;
+        label.style.minWidth = '40px';
+        label.style.fontSize = '14px';
+        label.style.fontWeight = '600';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'slide-content-input';
+        input.placeholder = i === 1 ? '예: 시선을 끄는 강력한 후킹 제목' : i === count ? '예: 무료 상담 신청 유도 (CTA)' : `예: ${i}번째 핵심 내용 또는 키워드`;
+        input.value = currentValues[i-1] || '';
+        
+        div.appendChild(label);
+        div.appendChild(input);
+        list.appendChild(div);
+      }
+    }
+
     // 흐름 설명 업데이트 로직
     document.addEventListener('DOMContentLoaded', () => {
-      // Setup accordions and chip selections (handled in common.js)
+      updateSlideInputs(); // 초기화
       
       const flowChips = document.querySelectorAll('.chip-group[data-id="flow_type"] .chip-btn');
       flowChips.forEach(chip => {
         chip.addEventListener('click', () => {
-          setTimeout(() => { // wait for common.js to set hidden input value
+          setTimeout(() => { 
             const flow = document.getElementById('flow_type').value;
             const descs = {
-              "정보 전달형": "1장: 후킹 질문 | 2장: 원인 분석 | 3장: 해결책 | 4장: 핵심 요약 | 5장: CTA",
-              "성공 수기형": "1장: 최악의 비포 | 2장: 변화 계기 | 3장: 극복 과정 | 4장: 놀라운 애프터 | 5장: CTA",
-              "시즌 이벤트형": "1장: 타깃의 불안감/이슈 | 2장: 상품/특강 소개 | 3장: 한정 혜택 | 4장: 수강생 반응 | 5장: CTA",
-              "노하우 방출형": "1장: 호기심 유발 | 2장: 노하우 1 | 3장: 노하우 2 | 4장: 노하우 3 | 5장: CTA",
-              "서비스 미리보기형": "1장: 타깃 공감 | 2장: 커리큘럼 소개 | 3장: 타사와의 차별점 | 4장: 생생한 후기 | 5장: CTA"
+              "제품/서비스 홍보형": "1장: 후킹/문제제기 | 중간: 특장점/혜택/증거 | 마지막: CTA",
+              "고객 페인포인트 해결형": "1장: 공감/고민 토로 | 중간: 원인분석/솔루션 | 마지막: CTA",
+              "전문성 노하우 공유형": "1장: 호기심/결과예고 | 중간: 단계별 노하우/꿀팁 | 마지막: CTA",
+              "브랜드 스토리/철학형": "1장: 비하인드/계기 | 중간: 과정/가치관/진심 | 마지막: CTA",
+              "리뷰/성공 사례 공유형": "1장: 놀라운 결과 | 중간: 리얼후기/비포애프터 | 마지막: CTA"
             };
             document.getElementById('flow-desc').textContent = descs[flow] || "";
           }, 50);
@@ -179,7 +231,8 @@
     });
 
     function generatePrompt() {
-      const flowType = document.getElementById('flow_type').value || "정보 전달형";
+      const flowType = document.getElementById('flow_type').value || "제품/서비스 홍보형";
+      const slideCount = document.getElementById('slide_count').value;
       const tone = document.getElementById('tone_manner').value || "전문가/신뢰감";
       const brand = document.getElementById('brand_name').value || '브랜딩포유';
       const target = document.getElementById('target_audience').value;
@@ -189,21 +242,34 @@
       const tuning = document.getElementById('tuning_options').value || "없음";
       const color = document.getElementById('brand_color_hex').value;
 
+      // 장별 세부 내용 수집
+      const slideInputs = document.querySelectorAll('.slide-content-input');
+      let slideContents = "";
+      slideInputs.forEach((input, idx) => {
+        if (input.value.trim()) {
+          slideContents += `- Slide ${idx + 1} Content: ${input.value.trim()}\n`;
+        }
+      });
+
       if (!target || !coreMsg) {
-        alert('주요 타깃 고객과 핵심 메시지를 입력해주세요.');
+        validateForm(['target_audience', 'core_message']);
         return;
       }
 
       const prompt = `[Role] Expert Content Marketer & Card News Director
-[Task] Plan a Highly-Optimized 5-slide Instagram Carousel (Card News)
+[Task] Plan a Highly-Optimized ${slideCount}-slide Instagram Carousel (Card News)
 
 [Marketing Context]
 - Flow Strategy: "${flowType}"
+- Number of Slides: ${slideCount}
 - Tone & Manner: "${tone}"
 - Brand/Service: "${brand}"
 - Target Audience: "${target}"
 - Core Message: "${coreMsg}"
 - CTA & Benefit: "${cta}"
+
+[Slide-Specific Content Requirements]
+${slideContents || "(No specific slide contents provided. Use the flow strategy to brainstorm optimal copy.)"}
 
 [Design Context]
 - Canvas Ratio: "${ratio}"
@@ -211,14 +277,16 @@
 - Detail Tuning Options: "${tuning}"
 
 [Constraints]
-- The carousel MUST have exactly 5 slides.
+- The carousel MUST have exactly ${slideCount} slides.
 - Follow the highly specific psychological flow of "${flowType}".
 - Apply the "${tone}" style throughout all copy.
 - Incorporate the [Detail Tuning Options].
-- Provide [Text Content] for each slide (Headline & max 2 short lines of body text).
-- Provide an [Image Prompt] for each slide optimized for ChatGPT DALL-E 3 (Image Generation 2.0). 
-  - The [Image Prompt] MUST be in English.
-  - It should describe the main visual or background, incorporating the [Brand Primary Color], and clearly state to leave blank space for text based on the "${ratio}" format.
+- For each slide, provide:
+  1. [Text Content]: Headline & max 2 short lines of body text. (In KOREAN)
+  2. [Image Prompt]: Optimized for ChatGPT DALL-E 3 (In ENGLISH). 
+     - Describe the main visual or background.
+     - Incorporate the [Brand Primary Color]: "${color}".
+     - Explicitly state: "Leave ample blank space for text overlay in a ${ratio} layout."
 
 [IMPORTANT REQUIREMENT]
 - All strategic outlines, explanations, and [Text Content] MUST be written entirely in KOREAN (한국어).
@@ -227,6 +295,8 @@
 [Output Format]
 # Card News Master Plan: ${brand}
 ## Marketing Strategy Overview
+- Slide Count: ${slideCount}
+- Strategy: ${flowType}
 - ...
 
 ---
@@ -234,12 +304,10 @@
 **[Text Content]**
 - Headline: ...
 - Body: ...
-**[Bridge Copy]** (If requested)
-- ...
 **[Image Prompt for DALL-E 3]**
 (English prompt detailing the aesthetic, subject, color, and negative space)
 
-## Slide 2: ... (Continue to Slide 5)`;
+... (Repeat for all ${slideCount} slides)`;
 
       showResult(prompt);
     }
