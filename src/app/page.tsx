@@ -181,7 +181,7 @@ export default function HubPage() {
       {/* 하단 플로우 박스 */}
       <div className="mt-16 bg-brand-50 rounded-3xl p-10 text-center">
         <h3 className="text-brand-600 font-bold mb-8 uppercase tracking-widest text-sm">모든 도구 공통 사용 흐름</h3>
-        <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-4 md:gap-8">
+        <div className="flex flex-col md:flex-row justify-center items-start gap-6 md:gap-2">
           {[
             { num: "1", text: "도구 선택" },
             { num: "2", text: "브랜드/상황 입력" },
@@ -189,13 +189,17 @@ export default function HubPage() {
             { num: "4", text: "복사 후 AI 붙여넣기" },
             { num: "5", text: "결과물 실무 적용" }
           ].map((step, idx) => (
-            <div key={idx} className="flex items-center gap-4 md:flex-col md:gap-3">
-              <div className="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm shadow-md">
-                {step.num}
+            <div key={idx} className="flex flex-col md:flex-row items-start md:contents">
+              <div className="flex items-center md:flex-col gap-4 md:gap-3 w-full md:w-auto">
+                <div className="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm shadow-md shrink-0">
+                  {step.num}
+                </div>
+                <p className="text-slate-800 font-medium text-sm md:w-28 leading-snug text-left md:text-center">{step.text}</p>
               </div>
-              <p className="text-slate-800 font-medium text-sm md:w-24 leading-snug">{step.text}</p>
               {idx < 4 && (
-                <div className="hidden md:block text-brand-300 mt-[-30px] ml-4 text-2xl">›</div>
+                <div className="hidden md:block text-brand-300 text-3xl font-light leading-none pt-0.5 px-2">
+                  ›
+                </div>
               )}
             </div>
           ))}
