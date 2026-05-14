@@ -1,59 +1,28 @@
 <!DOCTYPE html>
-<html lang="ko">
-  <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Naver Keyword Tool - BrandingForYou</title>
-      <link rel="stylesheet" href="../assets/style.css">
-  </head>
+<html>
+  <head><meta charset="utf-8"><title>Naver</title><link rel="stylesheet" href="../assets/style.css"></head>
 <body>
-      <div class="tool-container">
-                <h1>Naver Keyword Analysis</h1>
-              <div class="input-group">
-                          <input type="text" id="keyword-input" placeholder="Enter keyword to analyze">
-                          <button onclick="searchKeywords()">Analyze</button>button>
-              </div>div>
-              <div id="loader" style="display:none">Analyzing...</div>div>
-              <table class="keyword-table">
-                          <thead>
-                                            <tr>
-                                                                  <th>Keyword</th>
-                                              <th>Volume</th>
-                                              <th>Blogs</th>
-                                              <th>Ratio</th>
-                                              <th>Action</th>
-                                            </tr>
-                          </thead>
-                          <tbody id="keyword-list"></tbody>tbody>
-              </table>table>
-      </div>div>
-    <script>
-              async function searchKeywords() {
-                            const keyword = document.getElementById('keyword-input').value;
-                            if (!keyword) return alert('Please enter a keyword.');
-                            const loader = document.getElementById('loader');
-                            loader.style.display = 'block';
-                            try {
-                                              const res = await fetch(`/api/naver-search?keyword=${encodeURIComponent(keyword)}`);
-                                              const data = await res.json();
-                                              const list = document.getElementById('keyword-list');
-                                              list.innerHTML = data.map(item => `
-                                                                  <tr>
-                                                                                          <td>${item.keyword}</td>
-                                                                                                                  <td>${item.searchVolume.toLocaleString()}</td>
-                                                                                                                                          <td>${item.blogCount.toLocaleString()}</td>
-                                                                                                                                                                  <td>${item.ratio}</td>
-                                                                                                                                                                                          <td><button onclick="navigator.clipboard.writeText('${item.keyword}')">Copy</button></td>
-                                                                                                                                                                                                              </tr>
-                                                                                                                                                                                                                              `).join('');
-                            } catch (e) { alert('An error occurred.'); }
-                            finally { loader.style.display = 'none'; }
-              }
-    </script>
+  <div class="tool-container">
+    <h1>Naver Keyword</h1>
+  <input id="kw"><button onclick="s()">Search</button>button>
+  <div id="ld" style="display:none">Loading...</div>div>
+  <table class="keyword-table"><thead><tr><th>KW</th><th>Vol</th><th>Blog</th><th>Ratio</th></tr></thead><tbody id="res"></tbody>tbody></table>table>
+  </div>div>
+<script>
+  async function s(){
+    const k=document.getElementById('kw').value;
+    const ld=document.getElementById('ld');
+    ld.style.display='block';
+    try{
+      const r=await fetch('/api/naver-search?keyword='+k);
+      const d=await r.json();
+      document.getElementById('res').innerHTML=d.map(i=>`<tr><td>${i.keyword}</td><td>${i.searchVolume}</td><td>${i.blogCount}</td><td>${i.ratio}</td></tr>`).join('');
+    }catch(e){alert('Error')}
+    finally{ld.style.display='none'}
+  }
+</script>
 </body>
-</html>html>
-    </script></th></th>
-                                            </tr>
-                          </thead></h1>
-</body></title>
-  </head>
+</html>
+</script></th></th></tr></thead></h1>
+</body></title></head>
+</html>
