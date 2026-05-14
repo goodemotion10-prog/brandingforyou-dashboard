@@ -4,5 +4,13 @@
       "path": "/api/research/run",
       "schedule": "0 0 * * *"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "x-last-deployed", "value": "2026-05-14" }
+      ]
+    }
   ]
 }
