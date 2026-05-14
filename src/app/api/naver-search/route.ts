@@ -1,44 +1,103 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-const CUSTOMER_ID = process.env.NAVER_AD_CUSTOMER_ID;
-const API_KEY = process.env.NAVER_AD_API_KEY;
-const SECRET_KEY = process.env.NAVER_AD_SECRET_KEY;
-const CLIENT_ID = process.env.NAVER_CLIENT_ID;
-const CLIENT_SECRET = process.env.NAVER_CLIENT_SECRET;
-function generateSignature(timestamp: any, method: any, uri: any, secretKey: any) {
-        const message = `${timestamp}.${method}.${uri}`;
-        return crypto.createHmac('sha256', secretKey).update(message).digest('base64');
-}
+
 export async function GET(req: NextRequest) {
-        const { searchParams } = new URL(req.url);
-        const keyword = searchParams.get('keyword');
-        if (!keyword) return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
-        try {
-                  const timestamp = Date.now().toString();
-                  const uri = '/keywordstool';
-                  const method = 'GET';
-                  if (!SECRET_KEY || !API_KEY || !CUSTOMER_ID) return NextResponse.json({ error: 'Credentials missing' }, { status: 500 });
-                  const signature = generateSignature(timestamp, method, uri, SECRET_KEY);
-                  const adRes = await fetch(`https://api.naver.com${uri}?keywords=${encodeURIComponent(keyword)}&showDetail=1`, {
-                              headers: { 'X-Timestamp': timestamp, 'X-API-KEY': API_KEY, 'X-Customer': CUSTOMER_ID, 'X-Signature': signature }
-                  });
-                  const adData = await adRes.json();
-                  if (!adData.keywordList) return NextResponse.json({ error: 'Failed Ads API' }, { status: 500 });
-                  const keywords = adData.keywordList.slice(0, 10);
-                  const results = await Promise.all(keywords.map(async (item: any) => {
-                              const kw = item.relKeyword;
-                              const pc = (typeof item.monthlyPcQcCnt === 'number') ? item.monthlyPcQcCnt : 0;
-                              const mo = (typeof item.monthlyMobileQcCnt === 'number') ? item.monthlyMobileQcCnt : 0;
-                              const vol = pc + mo;
-                              const searchRes = await fetch(`https://openapi.naver.com/v1/search/blog.json?query=${encodeURIComponent(kw)}&display=1`, {
-                                            headers: { 'X-Naver-Client-Id': CLIENT_ID || '', 'X-Naver-Client-Secret': CLIENT_SECRET || '' }
-                              });
-                              const searchData = await searchRes.json();
-                              const blogCount = searchData.total || 0;
-                              return { keyword: kw, searchVolume: vol, blogCount, ratio: vol > 0 ? (blogCount / vol).toFixed(2) : 0 };
-                  }));
-                  return NextResponse.json(results);
-        } catch (error: any) {
-                  return NextResponse.json({ error: error.message }, { status: 500 });
+  const { searchParams } = new URL(req.url);
+  const keyword = searchParams.get('keyword');
+  const type = searchParams.get('type');
+
+  if (!keyword) {
+    return NextResponse.json({ error: 'Keyword is required' }, { status: 400 });
+  }
+
+  try {
+    if (type === 'blog') {
+      const clientId = process.env.NAVER_CLIENT_ID;
+      const clientSecret = process.env.NAVER_CLIENT_SECRET;
+
+      if (!clientId || !clientSecret) {
+        throw new Error('Naver Search API keys are missing');
+      }
+
+      const response = await fetch(
+        `https://openapi.naver.com/v1/search/blog.json?query=${encodeURIComponent(keyword)}&display=1`,
+        {
+          headers: {
+            'X-Naver-Client-Id': clientId,
+            'X-Naver-Client-Secret': clientSecret,
+          }
         }
+      );
+      
+      const data = await response.json();
+      return NextResponse.json({ total: data.total || 0, keyword });
+      
+    } else if (type === 'keyword' || type === 'analyze') {
+      const apiKey = process.env.NAVER_AD_API_KEY;
+      const customerId = process.env.NAVER_AD_CUSTOMER_ID;
+      const secretKey = process.env.NAVER_AD_SECRET_KEY;
+
+      if (!apiKey || !customerId || !secretKey) {
+        throw new Error('Naver AD API keys are missing');
+      }
+
+      const timestamp = Date.now().toString();
+      const message = `${timestamp}.GET./keywordstool`;
+      const signature = crypto.createHmac('sha256', secretKey!).update(message).digest('base64');
+      
+      const adResponse = await fetch(
+        `https://api.naver.com/keywordstool?hintKeywords=${encodeURIComponent(keyword)}&showDetail=1`,
+        {
+          headers: {
+            'X-Timestamp': timestamp,
+            'X-API-KEY': apiKey,
+            'X-Customer': customerId,
+            'X-Signature': signature,
+          }
+        }
+      );
+      
+      const adData = await adResponse.json();
+      const keywordList = adData.keywordList || [];
+
+      if (type === 'analyze' && keywordList.length > 0) {
+        const clientId = process.env.NAVER_CLIENT_ID;
+        const clientSecret = process.env.NAVER_CLIENT_SECRET;
+
+        if (clientId && clientSecret) {
+          const topKeywords = keywordList.slice(0, 15);
+          
+          const results = await Promise.all(topKeywords.map(async (item: any) => {
+            try {
+              const blogResponse = await fetch(
+                `https://openapi.naver.com/v1/search/blog.json?query=${encodeURIComponent(item.relKeyword)}&display=1`,
+                {
+                  headers: {
+                    'X-Naver-Client-Id': clientId,
+                    'X-Naver-Client-Secret': clientSecret,
+                  }
+                }
+              );
+              const blogData = await blogResponse.json();
+              return {
+                ...item,
+                blogCount: blogData.total || 0
+              };
+            } catch (e) {
+              return { ...item, blogCount: -1 };
+            }
+          }));
+
+          return NextResponse.json({ keywordList: results });
+        }
+      }
+      
+      return NextResponse.json(adData);
+    } else {
+      return NextResponse.json({ error: 'Invalid type' }, { status: 400 });
+    }
+  } catch (error: any) {
+    console.error('API Error:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
