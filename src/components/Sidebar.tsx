@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -8,7 +8,8 @@ import {
   History, 
   Settings,
   Sparkles,
-  Lightbulb
+  Lightbulb,
+  FileText
 } from "lucide-react";
 
 const menuItems = [
@@ -16,8 +17,9 @@ const menuItems = [
   { icon: Sparkles, label: "리서치 대시보드", href: "/research-dashboard" },
   { icon: Search, label: "리서치 키워드 관리", href: "/research" },
   { icon: History, label: "리서치 결과 모아보기", href: "/history" },
+  { icon: FileText, label: "데일리 포스팅 보고", href: "/daily-report" },
   { icon: Settings, label: "설정", href: "/settings" },
-  { icon: Lightbulb, label: "사용법 가이드", href: "/tips" },
+  { icon: Lightbulb, label: "사용 가이드", href: "/tips" },
 ];
 
 export default function Sidebar() {
