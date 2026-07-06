@@ -28,7 +28,7 @@ export async function performResearch(topic: string, frequency: string = 'daily'
     const searchData = await searchResponse.json();
     const context = searchData.results?.map((r: any) => `[제목: ${r.title}]\n[내용: ${r.content}]\n[출처: ${r.url}]`).join('\n\n') || "최근 24시간 내에 발견된 새로운 소식이 없습니다.";
 
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = `당신은 브랜딩포유(BrandingForYou)의 수석 리서치 애널리스트입니다. 
     오늘의 미션은 "${topic}"에 대해 지난 ${frequency === 'weekly' ? '1주일' : '24시간'} 동안 발생한 **'새로운' 이슈와 변화**를 포착하여 보고하는 것입니다.
     

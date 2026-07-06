@@ -33,31 +33,30 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: 'No tasks scheduled for today' });
     }
 
-    // 비동기 병렬 처리로 60초 타임아웃 방지
-    const results = await Promise.all(
-      tasksToRun.map(async (task) => {
-        try {
-          const research = await performResearch(task.topic, task.frequency);
-          if (research.success && research.summary) {
-            await sendResearchEmail(task.recipients, task.topic, research.summary);
-            await supabase.from('research_results').insert({
-              task_id: task.id,
-              title: `${task.topic} 리서치 보고서`,
-              content: research.summary,
-              summary: research.summary.substring(0, 200) + '...'
-            });
-            await supabase.from('research_tasks')
-              .update({ last_run: new Date().toISOString() })
-              .eq('id', task.id);
-            return { topic: task.topic, status: 'success' };
-          } else {
-            return { topic: task.topic, status: 'failed', error: research.error };
-          }
-        } catch (err) {
-          return { topic: task.topic, status: 'failed', error: String(err) };
+    // 순차적 처리로 Rate Limit 및 과부하 방지
+    const results = [];
+    for (const task of tasksToRun) {
+      try {
+        const research = await performResearch(task.topic, task.frequency);
+        if (research.success && research.summary) {
+          await sendResearchEmail(task.recipients, task.topic, research.summary);
+          await supabase.from('research_results').insert({
+            task_id: task.id,
+            title: `${task.topic} 리서치 보고서`,
+            content: research.summary,
+            summary: research.summary.substring(0, 200) + '...'
+          });
+          await supabase.from('research_tasks')
+            .update({ last_run: new Date().toISOString() })
+            .eq('id', task.id);
+          results.push({ topic: task.topic, status: 'success' });
+        } else {
+          results.push({ topic: task.topic, status: 'failed', error: research.error });
         }
-      })
-    );
+      } catch (err) {
+        results.push({ topic: task.topic, status: 'failed', error: String(err) });
+      }
+    }
     return NextResponse.json({ message: 'Research cycle completed', results });
   } catch (error) {
     console.error('API Error:', error);
